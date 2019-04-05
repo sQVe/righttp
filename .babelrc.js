@@ -5,6 +5,7 @@ module.exports = {
     [
       '@babel/env',
       {
+        corejs: 3,
         loose: true,
         modules: NODE_ENV === 'test' ? 'auto' : false,
         targets: {
@@ -16,6 +17,6 @@ module.exports = {
     ],
   ],
   plugins: ['es', 'cjs', 'test'].includes(NODE_ENV)
-    ? ['@babel/transform-runtime']
+    ? [['@babel/transform-runtime', { useESModules: NODE_ENV === 'es' }]]
     : [],
 }
