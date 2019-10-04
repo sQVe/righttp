@@ -21,8 +21,7 @@
     "build:es": "BUILD_BUNDLE=es rollup -c",
     "build:umd": "BUILD_BUNDLE=umd rollup -c",
     "clean": "rm -rf {dist,es,lib}",
-    "format": "prettier-eslint --write '{**/*,*}.{ts,json,tsx,md,yaml}'",
-    "format:check": "prettier-eslint --list-different '{**/*,*}.{ts,json,tsx,md,yaml}'",
+    "format": "prettier --write '{**/*,*}.{ts,json,tsx,md,yaml}'",
     "lint": "eslint '{**/*,*}.{ts,tsx}'",
     "prepublishOnly": "npm run build",
     "test": "jest",
@@ -63,7 +62,6 @@
     "lint-staged": "~9.4.0",
     "node-fetch": "~2.6.0",
     "prettier": "~1.18.0",
-    "prettier-eslint-cli": "~5.0.0",
     "rollup": "~1.23.0",
     "rollup-plugin-babel": "~4.3.0",
     "rollup-plugin-commonjs": "~10.1.0",
@@ -84,13 +82,13 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "prettier-eslint --write",
-      "eslint",
+      "prettier --write",
+      "eslint --fix",
       "jest --findRelatedTests",
       "git add"
     ],
     "*.json": [
-      "prettier-eslint --write",
+      "prettier --write",
       "git add"
     ]
   }
