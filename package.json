@@ -21,7 +21,7 @@
     "build:es": "BUILD_BUNDLE=es rollup -c",
     "build:umd": "BUILD_BUNDLE=umd rollup -c",
     "clean": "rm -rf {dist,es,lib}",
-    "format": "prettier --write '{**/*,*}.{ts,json,tsx,md,yaml}'",
+    "format": "prettier --write '{**/*,*}.{ts,json,tsx,md,yaml}' && eslint --fix '{**/*,*}.{ts,tsx}'",
     "lint": "eslint '{**/*,*}.{ts,tsx}'",
     "prepublishOnly": "npm run build",
     "test": "jest",
@@ -43,6 +43,8 @@
     "@babel/plugin-transform-runtime": "~7.6.0",
     "@babel/preset-env": "~7.6.0",
     "@types/jest": "^24.0.0",
+    "@typescript-eslint/eslint-plugin": "~2.3.0",
+    "@typescript-eslint/parser": "~2.3.0",
     "babel-core": "~7.0.0-bridge.0",
     "babel-eslint": "~10.0.0",
     "babel-jest": "~24.9.0",
@@ -68,7 +70,8 @@
     "rollup-plugin-json": "~4.0.0",
     "rollup-plugin-node-resolve": "~5.2.0",
     "rollup-plugin-terser": "~5.1.0",
-    "semantic-release": "~15.13.0"
+    "semantic-release": "~15.13.0",
+    "typescript": "~3.6.0"
   },
   "dependencies": {
     "@babel/polyfill": "~7.6.0",
