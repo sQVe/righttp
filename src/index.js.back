@@ -1,0 +1,116 @@
+import { createQuery, urlGuard } from './utility'
+
+const defaults = {
+  init: {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'GET',
+  },
+  opts: {
+    bindContext: true,
+    rawPayload: false,
+    responseAs: 'json',
+  },
+}
+
+export default class Righttp {
+  constructor(url, init, opts) {
+    this.url = urlGuard (url)
+    this.init = { ...defaults.init, ...(init || {}) }
+    this.opts = { ...defaults.opts, ...(opts || {}) }
+
+    if (this.opts.bindContext) {
+      ;[/* 'delete', 'get', 'post', 'put', */ 'request'].forEach (f => {
+        this[f] = this[f].bind (this)
+      })
+    }
+  }
+
+  applyDefaults(url, init) {
+    return [this.url + urlGuard (url), { ...this.init, ...(init || {}) }]
+  }
+
+  constructInit(key, val, acc) {
+    let x = val
+
+    if (acc === undefined) x = key ? this.init[key] : this.init
+    if (typeof x === 'function') x = x ()
+    if (typeof x !== 'object') return x
+
+    return Object.entries (x).reduce (
+      (a, [k, v]) => ({ ...a, [k]: this.constructInit (null, v, a) }),
+      acc || {}
+    )
+  }
+
+  currentContentType() {
+    return this.constructInit ('headers')['Content-Type']
+  }
+
+  forwardToStatusListener(res) {
+    const onStatus = this.opts.onStatus || {}
+    const { status } = res
+
+    const isInStatusRange = key => {
+      const [x, y] = key.split ('-')
+
+      return x && y && +x < status && +y > status
+    }
+
+    Object.keys (onStatus).forEach (
+      k => (onStatus[status] || isInStatusRange (k)) && onStatus[k] (res)
+    )
+  }
+
+  async parseResponse(res) {
+    const responseAs = (this.opts && this.opts.responseAs) || 'response'
+
+    switch (responseAs) {
+      case 'json':
+        try {
+          const text = await res.text ()
+          if (text.length > 0) return JSON.parse (text)
+          return undefined
+        } catch (err) {
+          throw err
+        }
+      case 'response':
+        return res
+      default:
+        return res[responseAs] ()
+    }
+  }
+
+  preparePayload(data) {
+    if (this.opts.rawPayload) return data
+
+    switch (this.currentContentType ()) {
+      case 'application/json':
+        return JSON.stringify (data)
+      case 'application/x-www-form-urlencoded':
+        return createQuery (data)
+      case 'multipart/form-data':
+        return Object.entries (data).reduce ((acc, entry) => {
+          acc.append (...entry)
+          return acc
+        }, new FormData ())
+      default:
+        return data
+    }
+  }
+
+  async request(url, init) {
+    const [preparedUrl, preparedInit] = this.applyDefaults (url, init)
+
+    if (preparedUrl.length === 0)
+      throw new Error ('Righttp needs an URL to make an request')
+
+    const res = await fetch (preparedUrl, preparedInit)
+
+    this.forwardToStatusListener (res)
+    if (res.ok) return this.parseResponse (res)
+    throw res
+  }
+}

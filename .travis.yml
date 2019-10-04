@@ -1,0 +1,18 @@
+os: linux
+dist: trusty
+language: node_js
+node_js:
+  - 8
+cache: npm
+script:
+  - npm run lint
+  - npm run format:check
+  - npm run build
+  - npm run test
+after_success:
+  - npm run test:cov:up
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - npx semantic-release
