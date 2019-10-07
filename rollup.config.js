@@ -5,6 +5,7 @@ import nodeResolve from 'rollup-plugin-node-resolve'
 
 import pkg from './package.json'
 
+const extensions = ['.js', '.jsx', '.ts', '.tsx']
 const bundleTarget = process.env.BUILD_BUNDLE
 const dependencies = [
   'core-js',
@@ -40,39 +41,26 @@ const bundle = presetBundleDefaults({
   external: external(dependencies),
   input: 'src/index.ts',
   output: { exports: 'named', indent: false },
-  plugins: [nodeResolve(), commonjs(), json()],
+  plugins: [nodeResolve({ extensions }), commonjs(), json()],
   treeshake: true,
 })
 
 const bundles = [
   bundle({
     output: { format: 'cjs', file: `lib/${pkg.name}.js` },
-    plugins: [babel({ runtimeHelpers: true })],
+    plugins: [babel({ extensions, runtimeHelpers: true })],
     type: 'cjs',
   }),
   bundle({
-    input: 'src/cli.js',
-    output: { format: 'cjs', file: `lib/cli.js` },
-    plugins: [babel({ runtimeHelpers: true })],
-    type: 'cli',
-  }),
-  bundle({
     output: { format: 'es', file: `es/${pkg.name}.js` },
-    plugins: [babel({ runtimeHelpers: true })],
+    plugins: [babel({ extensions, runtimeHelpers: true })],
     type: 'es',
   }),
   bundle({
     output: { format: 'es', file: `es/${pkg.name}.mjs` },
-    plugins: [babel({ runtimeHelpers: true })],
+    plugins: [babel({ extensions, runtimeHelpers: true })],
     type: 'es',
   }),
-  {
-    external: external(dependencies),
-    input: 'src/color-scaper.js',
-    output: { format: 'cjs', file: '.tmp/color-scraper.js' },
-    plugins: [json()],
-    type: 'colors',
-  },
 ]
 
 export default (() =>

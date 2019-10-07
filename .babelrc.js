@@ -15,6 +15,7 @@ module.exports = {
         useBuiltIns: 'usage',
       },
     ],
+    '@babel/typescript',
   ],
   plugins: ['es', 'cjs', 'test'].includes(NODE_ENV)
     ? [['@babel/transform-runtime', { useESModules: NODE_ENV === 'es' }]]
