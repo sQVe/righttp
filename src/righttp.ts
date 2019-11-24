@@ -9,10 +9,9 @@ const shallowMergeArgs = (a: Container) => (b: Container): Container => ({
 })
 
 /** preset :: ({a} -> Promise b) -> {a} -> Promise b */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const preset = (fn: (container: Container) => Promise<any>) => (
-  container: Container
-) => (url: string, init: Init, options: Options) =>
+const preset = (
+  fn: (container: Container) => Promise<any> // eslint-disable-line @typescript-eslint/no-explicit-any
+) => (container: Container) => (url: string, init: Init, options: Options) =>
   fn(shallowMergeArgs(container)({ url, init, options }))
 
 /** request :: (String, {a}, {b}) -> Promise c */
