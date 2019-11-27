@@ -30,3 +30,7 @@ export type Container = {
   init: Init,
   options: Options,
 }
+
+export type QueryParams = {
+  [key: string]: string | number | boolean,
+}

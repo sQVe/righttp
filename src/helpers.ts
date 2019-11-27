@@ -1,8 +1,5 @@
+import { Container, QueryParams } from './types'
 import { compose, isString } from './utility'
-
-type QueryParams = {
-  [key: string]: string | number | boolean,
-}
 
 /** createQuery :: {k:v} -> String */
 export const createQuery = (params: QueryParams = {}) => {
@@ -26,3 +23,12 @@ export function sanitizeUrl(url?: string): string {
       )(url)
     : ''
 }
+
+/** combineContainers :: {a} -> {a} -> {a} */
+export const combineContainers = (a: Container) => (
+  b: Container
+): Container => ({
+  url: sanitizeUrl(a.url) + sanitizeUrl(b.url),
+  init: { ...a.init, ...b.init },
+  options: { ...a.options, ...b.options },
+})
