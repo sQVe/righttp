@@ -9,7 +9,7 @@ type HttpMethod =
   | 'PUT'
   | 'TRACE'
 
-type RequestResolve =
+export type ResponseResolve =
   | 'ArrayBuffer'
   | 'Blob'
   | 'FormData'
@@ -17,12 +17,20 @@ type RequestResolve =
   | 'Response'
   | 'Text'
 
+export type ResolveMethod =
+  | 'arrayBuffer'
+  | 'blob'
+  | 'formData'
+  | 'json'
+  | 'response'
+  | 'text'
+
 export type Init = RequestInit & {
   method?: HttpMethod,
 }
 
 export type Options = {
-  resolveAs?: RequestResolve,
+  resolveAs?: ResponseResolve,
 }
 
 export type Container = {
