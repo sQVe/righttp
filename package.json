@@ -20,7 +20,7 @@
     "build:cjs": "BUILD_BUNDLE=cjs rollup -c",
     "build:es": "BUILD_BUNDLE=es rollup -c",
     "build:umd": "BUILD_BUNDLE=umd rollup -c",
-    "clean": "rm -rf {dist,es,lib}",
+    "clean": "rm -rf {es,lib}",
     "format": "prettier --write '{**/*,*}.{ts,json,tsx,md,yaml}' && eslint --fix '{**/*,*}.{ts,tsx}'",
     "lint": "eslint '{**/*,*}.{ts,tsx}'",
     "prepublishOnly": "npm run build",
@@ -30,10 +30,8 @@
     "test:watch": "jest --watch --onlyChanged"
   },
   "main": "lib/righttp.js",
-  "unpkg": "dist/righttp.js",
   "module": "es/righttp.mjs",
   "files": [
-    "dist",
     "es",
     "lib"
   ],
