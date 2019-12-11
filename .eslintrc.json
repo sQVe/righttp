@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "eslint-config-sqve/fp",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking"
-  ],
+  "extends": ["eslint-config-sqve/fp"],
   "rules": {
     "fp/no-throw": "off"
   }
