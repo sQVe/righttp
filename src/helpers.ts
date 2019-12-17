@@ -35,25 +35,26 @@ export const resolveResponse = async (
 ) => {
   const resolveMethodName = getResolveMethodName(resolveAs)
 
+  if (resolveMethodName === 'response') return res
   if (resolveMethodName === 'json') {
     const text = await res.clone().text()
 
     if (text.length === 0) return {}
     return res.json()
-  } else if (resolveMethodName === 'response') {
-    return res
   }
 
   return res[resolveMethodName]()
 }
 
 /** sanitizeUrl :: String -> String */
-export function sanitizeUrl(url?: string): string {
+export function sanitizeUrl(url?: string) {
   const addTrailingSlash = (x: string) => (x.endsWith('/') ? x : `${x}/`)
   const removeLeadingSlash = (x: string) =>
     x.startsWith('/') ? x.substring(1) : x
 
-  return isString(url) ? compose(addTrailingSlash, removeLeadingSlash)(url) : ''
+  return isString(url)
+    ? (compose(addTrailingSlash, removeLeadingSlash)(url) as string)
+    : ''
 }
 
 /** combineContainers :: {a} -> {a} -> {a} */

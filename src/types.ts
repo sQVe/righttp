@@ -34,9 +34,9 @@ export type Options = {
 }
 
 export type Container = {
-  url: string,
   init: Init,
   options: Options,
+  url: string,
 }
 
 export type QueryParams = {

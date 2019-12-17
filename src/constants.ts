@@ -9,7 +9,5 @@ export const defaultContainer: Container = {
     },
     method: 'GET',
   },
-  options: {
-    resolveAs: 'JSON',
-  },
+  options: { resolveAs: 'JSON' },
 }
