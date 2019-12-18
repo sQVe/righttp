@@ -9,7 +9,7 @@ script:
   - npm run build
   - npm run test
 after_success:
-  - npm run test:cov:up
+  - npm run test:coverage:upload
 deploy:
   provider: script
   skip_cleanup: true
