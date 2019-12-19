@@ -1,1 +1,1 @@
-export * from './righttp.ts'
+export * from './righttp'

@@ -43,7 +43,7 @@ export const resolveResponse = async (
   if (resolveMethodName === 'json') {
     const text = await res.clone().text()
 
-    if (text.length === 0) return {}
+    if (text.length === 0) return undefined // eslint-disable-line fp/no-nil
     return res.json()
   }
 

@@ -1,8 +1,8 @@
 import {
   createQuery,
-  sanitizeUrl,
   getResolveMethodName,
   resolveResponse,
+  sanitizeUrl,
 } from '../src/helpers'
 import { falsyValues } from './setup/constants'
 
@@ -43,6 +43,51 @@ describe('Helpers', () => {
       expect(getResolveMethodName('foo')).toBe('foo')
       expect(getResolveMethodName('BAR')).toBe('BAR')
       expect(getResolveMethodName('fooBar')).toBe('fooBar')
+    })
+  })
+
+  describe('resolveResponse', () => {
+    const fooMock = jest.fn(() => 'foo')
+
+    beforeEach(fooMock.mockClear)
+
+    Object.entries(resolveMethodMap)
+      .filter(([type]) => !['JSON', 'Response'].includes(type))
+      .forEach(([type, method]) => {
+        const mock = fooMock
+        const res = { [method]: mock }
+
+        it(`should resolve as ${type}`, () => {
+          expect(resolveResponse(res, type)).resolves.toBe('foo')
+          expect(mock).toHaveBeenCalledTimes(1)
+        })
+      })
+
+    it('should resolve as JSON', () => {
+      const textMock = fooMock
+      const cloneMock = jest.fn(() => ({ text: textMock }))
+      const jsonMock = fooMock
+      const res = { json: jsonMock, clone: cloneMock }
+
+      expect(resolveResponse(res, 'JSON')).resolves.toBe('foo')
+      expect(textMock).toHaveBeenCalledTimes(1)
+      expect(cloneMock).toHaveBeenCalledTimes(1)
+      expect(jsonMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return undefined when resolved as JSON with empty response', () => {
+      const textMock = jest.fn(() => '')
+      const cloneMock = jest.fn(() => ({ text: textMock }))
+      const jsonMock = fooMock
+      const res = { json: jsonMock, clone: cloneMock }
+
+      expect(resolveResponse(res, 'JSON')).resolves.toBeUndefined()
+    })
+
+    it('should resolve as Response', () => {
+      const res = 'foo'
+
+      expect(resolveResponse(res, 'Response')).resolves.toBe(res)
     })
   })
 
