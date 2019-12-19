@@ -25,7 +25,7 @@ const request = async (container: Container) => {
  * TODO: Write proper JSDocs for `righttp` function and the functions it
  * returns.
  */
-export function righttp(url = '', init: Init = {}, options: Options = {}) {
+export function righttp(url: string, init: Init, options: Options) {
   const container = combineContainers(defaultContainer)({
     url,
     init,

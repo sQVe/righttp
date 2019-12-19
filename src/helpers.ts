@@ -62,8 +62,8 @@ export const combineContainers = (a: Container) => (
   b: Container
 ): Container => ({
   url: sanitizeUrl(a.url) + sanitizeUrl(b.url),
-  init: { ...a.init, ...b.init },
-  options: { ...a.options, ...b.options },
+  init: { ...(a.init || {}), ...(b.init || {}) },
+  options: { ...(a.options || {}), ...(b.options || {}) },
 })
 
 /** preset :: ({a} -> Promise b) -> {a} -> Promise b */
