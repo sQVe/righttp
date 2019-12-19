@@ -9,8 +9,8 @@ import {
 import { compose, isString } from './utility'
 
 /** createQuery :: {k:v} -> String */
-export const createQuery = (params: QueryParams = {}) => {
-  const arr = Object.entries(params).map(([k, v]) =>
+export const createQuery = (params: QueryParams) => {
+  const arr = Object.entries(params || {}).map(([k, v]) =>
     [k, encodeURIComponent(v)].join('=')
   )
 
@@ -20,12 +20,16 @@ export const createQuery = (params: QueryParams = {}) => {
 /** getResolveMethodName :: String -> String */
 export const getResolveMethodName = (resolveAs: ResponseResolve) => {
   const caseSafeResolveAs = resolveAs.toLowerCase()
-  const mixedCaseMethodNameLookup: { [index: string]: ResolveMethod } = {
+  const methodNameLookup: { [index: string]: ResolveMethod } = {
     arraybuffer: 'arrayBuffer',
+    blob: 'blob',
     formdata: 'formData',
+    json: 'json',
+    response: 'response',
+    text: 'text',
   }
 
-  return mixedCaseMethodNameLookup[caseSafeResolveAs] || caseSafeResolveAs
+  return methodNameLookup[caseSafeResolveAs] || resolveAs
 }
 
 /** resolveMethod :: (Response, String) -> Promise a */
@@ -52,7 +56,7 @@ export function sanitizeUrl(url?: string) {
   const removeLeadingSlash = (x: string) =>
     x.startsWith('/') ? x.substring(1) : x
 
-  return isString(url)
+  return isString(url) && url.length > 0
     ? (compose(addTrailingSlash, removeLeadingSlash)(url) as string)
     : ''
 }
