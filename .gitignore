@@ -28,9 +28,9 @@ package.lock
 # Build generated.
 build/
 coverage/
-dist/
 es/
 lib/
+types/
 
 # SublimeText.
 *.stTheme.cache
