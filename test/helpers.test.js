@@ -1,8 +1,8 @@
 import {
+  combineUrls,
   createQuery,
   getResolveMethodName,
   resolveResponse,
-  sanitizeUrl,
 } from '../src/helpers'
 import { falsyValues } from './setup/constants'
 
@@ -16,6 +16,49 @@ const resolveMethodMap = {
 }
 
 describe('Helpers', () => {
+  describe('combineContainers', () => {
+    // TODO: Test basic function.
+    // TODO: Test init and options defaults (empty object).
+    // TODO: Test url concatenation.
+  })
+
+  describe('combineUrls', () => {
+    it('should return combined urls', () => {
+      expect(combineUrls(['https://www.foo.com', 'bar', 'baz'])).toBe(
+        'https://www.foo.com/bar/baz'
+      )
+    })
+
+    it('should sanitize leading and ending slashes between urls', () => {
+      expect(combineUrls(['foo/', 'bar'])).toBe('foo/bar')
+      expect(combineUrls(['foo', '/bar'])).toBe('foo/bar')
+      expect(combineUrls(['foo/', '/bar'])).toBe('foo/bar')
+    })
+
+    it('should not sanitize leading slash of first url', () => {
+      expect(combineUrls(['foo', 'bar'])).toBe('foo/bar')
+      expect(combineUrls(['/foo', 'bar'])).toBe('/foo/bar')
+    })
+
+    it('should not sanitize leading slash of last url', () => {
+      expect(combineUrls(['foo', 'bar'])).toBe('foo/bar')
+      expect(combineUrls(['foo', 'bar/'])).toBe('foo/bar/')
+    })
+
+    it('should return empty string when given no valid urls', () => {
+      expect(combineUrls(undefined)).toBe('')
+      expect(combineUrls([])).toBe('')
+      expect(combineUrls(falsyValues)).toBe('')
+    })
+
+    it('should return first url when given a single valid url', () => {
+      expect(combineUrls(['foo'])).toBe('foo')
+      expect(combineUrls(['/foo'])).toBe('/foo')
+      expect(combineUrls(['foo/'])).toBe('foo/')
+      expect(combineUrls(['/foo/'])).toBe('/foo/')
+    })
+  })
+
   describe('createQuery', () => {
     it('should return query string', () => {
       const query = createQuery({ foo: true, bar: 'baz' })
@@ -88,28 +131,6 @@ describe('Helpers', () => {
       const res = 'foo'
 
       expect(resolveResponse(res, 'Response')).resolves.toBe(res)
-    })
-  })
-
-  describe('sanitizeUrl', () => {
-    it('should remove leading slash from url', () => {
-      const url = sanitizeUrl('/foo/')
-
-      expect(url).toBe('foo/')
-    })
-
-    it('should add trailing slash to url', () => {
-      const url = sanitizeUrl('https://www.foo.com')
-
-      expect(url).toBe('https://www.foo.com/')
-    })
-
-    it('should return empty string', () => {
-      falsyValues.forEach(x => {
-        const url = sanitizeUrl(x)
-
-        expect(url).toBe('')
-      })
     })
   })
 })
