@@ -6,7 +6,23 @@ import {
   ResolveMethod,
   ResponseResolve,
 } from './types'
-import { compose, isString } from './utility'
+import { isString } from './utility'
+
+/** combineUrls :: [String] -> String */
+export const combineUrls = (urls: string[]) => {
+  const addTrailingSlash = (x: string) => (x.endsWith('/') ? x : `${x}/`)
+  const removeLeadingSlash = (x: string) =>
+    x.startsWith('/') ? x.substring(1) : x
+
+  const validUrls = (urls || []).filter(isString)
+
+  if (validUrls.length === 0) return ''
+  if (validUrls.length === 1) return validUrls[0]
+
+  return validUrls.reduce(
+    (acc, url) => addTrailingSlash(acc) + removeLeadingSlash(url)
+  )
+}
 
 /** createQuery :: {k:v} -> String */
 export const createQuery = (params: QueryParams) => {
@@ -50,22 +66,11 @@ export const resolveResponse = async (
   return res[resolveMethodName]()
 }
 
-/** sanitizeUrl :: String -> String */
-export function sanitizeUrl(url?: string) {
-  const addTrailingSlash = (x: string) => (x.endsWith('/') ? x : `${x}/`)
-  const removeLeadingSlash = (x: string) =>
-    x.startsWith('/') ? x.substring(1) : x
-
-  return isString(url) && url.length > 0
-    ? (compose(addTrailingSlash, removeLeadingSlash)(url) as string)
-    : ''
-}
-
 /** combineContainers :: {a} -> {a} -> {a} */
 export const combineContainers = (a: Container) => (
   b: Container
 ): Container => ({
-  url: sanitizeUrl(a.url) + sanitizeUrl(b.url),
+  url: combineUrls([a.url, b.url]),
   init: { ...(a.init || {}), ...(b.init || {}) },
   options: { ...(a.options || {}), ...(b.options || {}) },
 })
