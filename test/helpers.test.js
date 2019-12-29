@@ -1,12 +1,23 @@
 import {
-  combineUrls,
   combineContainers,
+  combineUrls,
   createQuery,
   getResolveMethodName,
+  preset,
   resolveResponse,
 } from '../src/helpers'
 import { falsyValues } from './setup/constants'
 
+const fooContainer = {
+  url: 'foo',
+  init: { foo: true },
+  options: { foo: true },
+}
+const barContainer = {
+  url: 'bar',
+  init: { foo: false, bar: true },
+  options: { foo: false, bar: true },
+}
 const resolveMethodMap = {
   ArrayBuffer: 'arrayBuffer',
   Blob: 'blob',
@@ -19,17 +30,10 @@ const resolveMethodMap = {
 describe('Helpers', () => {
   describe('combineContainers', () => {
     it('should return a combined container', () => {
-      const a = { url: 'a', init: { a: true }, options: { a: true } }
-      const b = {
-        url: 'b',
-        init: { a: false, b: true },
-        options: { a: false, b: true },
-      }
-
-      expect(combineContainers(a)(b)).toEqual({
-        url: `${a.url}/${b.url}`,
-        init: { ...a.init, ...b.init },
-        options: { ...a.options, ...b.options },
+      expect(combineContainers(fooContainer)(barContainer)).toEqual({
+        url: `${fooContainer.url}/${barContainer.url}`,
+        init: { ...fooContainer.init, ...barContainer.init },
+        options: { ...fooContainer.options, ...barContainer.options },
       })
     })
 
@@ -106,6 +110,20 @@ describe('Helpers', () => {
       expect(getResolveMethodName('foo')).toBe('foo')
       expect(getResolveMethodName('BAR')).toBe('BAR')
       expect(getResolveMethodName('fooBar')).toBe('fooBar')
+    })
+  })
+
+  describe('preset', () => {
+    it('should return preset function with combined containers', () => {
+      const presetFn = preset(container => container)(fooContainer)(
+        ...Object.values(barContainer)
+      )
+
+      expect(presetFn).toEqual({
+        url: `${fooContainer.url}/${barContainer.url}`,
+        init: { ...fooContainer.init, ...barContainer.init },
+        options: { ...fooContainer.options, ...barContainer.options },
+      })
     })
   })
 
