@@ -6,26 +6,8 @@ import {
   preset,
   resolveResponse,
 } from '../src/helpers'
-import { falsyValues } from './setup/constants'
-
-const fooContainer = {
-  url: 'foo',
-  init: { foo: true },
-  options: { foo: true },
-}
-const barContainer = {
-  url: 'bar',
-  init: { foo: false, bar: true },
-  options: { foo: false, bar: true },
-}
-const resolveMethodMap = {
-  ArrayBuffer: 'arrayBuffer',
-  Blob: 'blob',
-  FormData: 'formData',
-  JSON: 'json',
-  Response: 'response',
-  Text: 'text',
-}
+import { falsyValues, resolveMethodMap } from './setup/constants'
+import { barContainer, fooContainer } from './setup/mocks'
 
 describe('Helpers', () => {
   describe('combineContainers', () => {
