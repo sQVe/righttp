@@ -1,5 +1,6 @@
 import {
   combineUrls,
+  combineContainers,
   createQuery,
   getResolveMethodName,
   resolveResponse,
@@ -17,9 +18,28 @@ const resolveMethodMap = {
 
 describe('Helpers', () => {
   describe('combineContainers', () => {
-    // TODO: Test basic function.
-    // TODO: Test init and options defaults (empty object).
-    // TODO: Test url concatenation.
+    it('should return a combined container', () => {
+      const a = { url: 'a', init: { a: true }, options: { a: true } }
+      const b = {
+        url: 'b',
+        init: { a: false, b: true },
+        options: { a: false, b: true },
+      }
+
+      expect(combineContainers(a)(b)).toEqual({
+        url: `${a.url}/${b.url}`,
+        init: { ...a.init, ...b.init },
+        options: { ...a.options, ...b.options },
+      })
+    })
+
+    it('should handle missing values gracefully', () => {
+      expect(combineContainers({})({})).toEqual({
+        url: '',
+        init: {},
+        options: {},
+      })
+    })
   })
 
   describe('combineUrls', () => {
