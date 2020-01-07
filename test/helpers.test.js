@@ -12,11 +12,7 @@ import { barContainer, fooContainer } from './setup/mocks'
 describe('Helpers', () => {
   describe('combineContainers', () => {
     it('should return a combined container', () => {
-      expect(combineContainers(fooContainer)(barContainer)).toEqual({
-        url: `${fooContainer.url}/${barContainer.url}`,
-        init: { ...fooContainer.init, ...barContainer.init },
-        options: { ...fooContainer.options, ...barContainer.options },
-      })
+      expect(combineContainers(fooContainer)(barContainer)).toMatchSnapshot()
     })
 
     it('should handle missing values gracefully', () => {
@@ -108,11 +104,7 @@ describe('Helpers', () => {
         ...Object.values(barContainer)
       )
 
-      expect(presetFn).toEqual({
-        url: `${fooContainer.url}/${barContainer.url}`,
-        init: { ...fooContainer.init, ...barContainer.init },
-        options: { ...fooContainer.options, ...barContainer.options },
-      })
+      expect(presetFn).toMatchSnapshot()
     })
   })
 

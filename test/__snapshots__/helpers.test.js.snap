@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Helpers combineContainers should return a combined container 1`] = `
+Object {
+  "init": Object {
+    "bar": true,
+    "foo": false,
+  },
+  "options": Object {
+    "bar": true,
+    "foo": false,
+  },
+  "url": "foo/bar",
+}
+`;
+
+exports[`Helpers preset should return preset function with combined containers 1`] = `
+Object {
+  "init": Object {
+    "bar": true,
+    "foo": false,
+  },
+  "options": Object {
+    "bar": true,
+    "foo": false,
+  },
+  "url": "foo/bar",
+}
+`;
