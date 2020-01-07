@@ -1,4 +1,5 @@
-import { compose } from '../src/utility'
+import { compose, isString } from '../src/utility'
+import { valuesWithDifferentTypes } from './setup/constants'
 
 describe('Utility', () => {
   describe('compose', () => {
@@ -13,5 +14,15 @@ describe('Utility', () => {
     })
   })
 
-  describe('isString', () => {})
+  describe('isString', () => {
+    it('should return true for strings', () => {
+      expect(isString('foo')).toBe(true)
+    })
+
+    it('should return false for non strings', () => {
+      valuesWithDifferentTypes
+        .filter(x => typeof x !== 'string')
+        .forEach(x => expect(isString(x)).toBe(false))
+    })
+  })
 })

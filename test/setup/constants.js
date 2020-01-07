@@ -1,4 +1,13 @@
 export const falsyValues = ['', 0, NaN, false, null, undefined]
+export const valuesWithDifferentTypes = [
+  '',
+  () => {},
+  Symbol('symbol'),
+  true,
+  undefined,
+  {},
+]
+
 export const resolveMethodMap = {
   ArrayBuffer: 'arrayBuffer',
   Blob: 'blob',
