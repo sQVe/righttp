@@ -14,7 +14,7 @@ export const combineUrls = (urls: string[]) => {
   const removeLeadingSlash = (x: string) =>
     x.startsWith('/') ? x.substring(1) : x
 
-  const validUrls = (urls || []).filter(isString)
+  const validUrls = (urls || []).filter(x => isString(x) && x.length > 0)
 
   if (validUrls.length === 0) return ''
   if (validUrls.length === 1) return validUrls[0]

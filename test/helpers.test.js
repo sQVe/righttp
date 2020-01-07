@@ -63,6 +63,13 @@ describe('Helpers', () => {
       expect(combineUrls(['foo/'])).toBe('foo/')
       expect(combineUrls(['/foo/'])).toBe('/foo/')
     })
+
+    it('should discard empty urls', () => {
+      expect(combineUrls(['', 'foo', ''])).toBe('foo')
+      expect(combineUrls(['', '/foo', ''])).toBe('/foo')
+      expect(combineUrls(['', 'foo/', ''])).toBe('foo/')
+      expect(combineUrls(['', '/foo/', ''])).toBe('/foo/')
+    })
   })
 
   describe('createQuery', () => {

@@ -1,1 +1,1 @@
-export * from './righttp'
+export { righttp as default } from './righttp'
