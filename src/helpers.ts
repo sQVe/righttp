@@ -48,9 +48,8 @@ export const getResolveMethodName = (resolveAs: ResponseResolve) => {
   return methodNameLookup[caseSafeResolveAs] || resolveAs
 }
 
-/** resolveMethod :: (Response, String) -> Promise a */
-export const resolveResponse = async (
-  res: Response,
+/** resolveMethod :: Response -> String -> Promise a */
+export const resolveResponse = (res: Response) => async (
   resolveAs: ResponseResolve
 ) => {
   const resolveMethodName = getResolveMethodName(resolveAs)

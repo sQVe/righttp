@@ -120,7 +120,7 @@ describe('Helpers', () => {
         const res = { [method]: mock }
 
         it(`should resolve as ${type}`, () => {
-          expect(resolveResponse(res, type)).resolves.toBe('foo')
+          expect(resolveResponse(res)(type)).resolves.toBe('foo')
           expect(mock).toHaveBeenCalledTimes(1)
         })
       })
@@ -131,7 +131,7 @@ describe('Helpers', () => {
       const jsonMock = fooMock
       const res = { json: jsonMock, clone: cloneMock }
 
-      expect(resolveResponse(res, 'JSON')).resolves.toBe('foo')
+      expect(resolveResponse(res)('JSON')).resolves.toBe('foo')
       expect(textMock).toHaveBeenCalledTimes(1)
       expect(cloneMock).toHaveBeenCalledTimes(1)
       expect(jsonMock).toHaveBeenCalledTimes(1)
@@ -143,13 +143,13 @@ describe('Helpers', () => {
       const jsonMock = fooMock
       const res = { json: jsonMock, clone: cloneMock }
 
-      expect(resolveResponse(res, 'JSON')).resolves.toBeUndefined()
+      expect(resolveResponse(res)('JSON')).resolves.toBeUndefined()
     })
 
     it('should resolve as Response', () => {
       const res = 'foo'
 
-      expect(resolveResponse(res, 'Response')).resolves.toBe(res)
+      expect(resolveResponse(res)('Response')).resolves.toBe(res)
     })
   })
 })
