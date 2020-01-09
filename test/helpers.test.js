@@ -2,11 +2,11 @@ import {
   combineContainers,
   combineUrls,
   createQuery,
-  getResolveMethodName,
+  getResolveAsMethodName,
   preset,
   resolveResponse,
 } from '../src/helpers'
-import { falsyValues, resolveMethodMap } from './setup/constants'
+import { falsyValues, resolveAsMethodNameMap } from './setup/constants'
 import { barContainer, fooContainer } from './setup/mocks'
 
 describe('Helpers', () => {
@@ -86,15 +86,19 @@ describe('Helpers', () => {
 
   describe('getResolveMethodName', () => {
     it('should return matched method name', () => {
-      Object.entries(resolveMethodMap).forEach(([type, method]) => {
-        expect(getResolveMethodName(type)).toBe(method)
+      Object.entries(resolveAsMethodNameMap).forEach(([type, method]) => {
+        expect(getResolveAsMethodName(type)).toBe(method)
       })
     })
 
     it('should return resolveAs when no match found', () => {
-      expect(getResolveMethodName('foo')).toBe('foo')
-      expect(getResolveMethodName('BAR')).toBe('BAR')
-      expect(getResolveMethodName('fooBar')).toBe('fooBar')
+      expect(getResolveAsMethodName('foo')).toBe('foo')
+      expect(getResolveAsMethodName('BAR')).toBe('BAR')
+      expect(getResolveAsMethodName('fooBar')).toBe('fooBar')
+    })
+
+    it('should return method response given no resolveAs', () => {
+      expect(getResolveAsMethodName()).toBe('response')
     })
   })
 
@@ -113,7 +117,7 @@ describe('Helpers', () => {
 
     beforeEach(fooMock.mockClear)
 
-    Object.entries(resolveMethodMap)
+    Object.entries(resolveAsMethodNameMap)
       .filter(([type]) => !['JSON', 'Response'].includes(type))
       .forEach(([type, method]) => {
         const mock = fooMock

@@ -34,8 +34,7 @@ export const createQuery = (params: QueryParams) => {
 }
 
 /** getResolveAsMethodName :: String -> String */
-export const getResolveMethodName = (resolveAs: ResponseResolve) => {
-  const caseSafeResolveAs = resolveAs.toLowerCase()
+export const getResolveAsMethodName = (resolveAs?: ResponseResolve) => {
   const methodNameLookup: { [index: string]: ResolveMethod } = {
     arraybuffer: 'arrayBuffer',
     blob: 'blob',
@@ -45,24 +44,27 @@ export const getResolveMethodName = (resolveAs: ResponseResolve) => {
     text: 'text',
   }
 
+  if (resolveAs == null) return methodNameLookup.response
+
+  const caseSafeResolveAs = resolveAs.toLowerCase()
   return methodNameLookup[caseSafeResolveAs] || resolveAs
 }
 
 /** resolveResponse :: Response a -> String -> Promise b */
 export const resolveResponse = (res: Response) => async (
-  resolveAs: ResponseResolve
+  resolveAs?: ResponseResolve
 ) => {
-  const resolveMethodName = getResolveMethodName(resolveAs)
+  const resolveAsMethodName = getResolveAsMethodName(resolveAs)
 
-  if (resolveMethodName === 'response') return res
-  if (resolveMethodName === 'json') {
+  if (resolveAsMethodName === 'response') return res
+  if (resolveAsMethodName === 'json') {
     const text = await res.clone().text()
 
     if (text.length === 0) return undefined // eslint-disable-line fp/no-nil
     return res.json()
   }
 
-  return res[resolveMethodName]()
+  return res[resolveAsMethodName]()
 }
 
 /** combineContainers :: Container -> Container -> Container */
