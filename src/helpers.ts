@@ -24,7 +24,7 @@ export const combineUrls = (urls: string[]) => {
   )
 }
 
-/** createQuery :: {k:v} -> String */
+/** createQuery :: {k: v} -> String */
 export const createQuery = (params: QueryParams) => {
   const arr = Object.entries(params || {}).map(([k, v]) =>
     [k, encodeURIComponent(v)].join('=')
@@ -33,7 +33,7 @@ export const createQuery = (params: QueryParams) => {
   return arr.length ? arr.join('&') : ''
 }
 
-/** getResolveMethodName :: String -> String */
+/** getResolveAsMethodName :: String -> String */
 export const getResolveMethodName = (resolveAs: ResponseResolve) => {
   const caseSafeResolveAs = resolveAs.toLowerCase()
   const methodNameLookup: { [index: string]: ResolveMethod } = {
@@ -48,7 +48,7 @@ export const getResolveMethodName = (resolveAs: ResponseResolve) => {
   return methodNameLookup[caseSafeResolveAs] || resolveAs
 }
 
-/** resolveMethod :: Response -> String -> Promise a */
+/** resolveResponse :: Response a -> String -> Promise b */
 export const resolveResponse = (res: Response) => async (
   resolveAs: ResponseResolve
 ) => {
@@ -65,7 +65,7 @@ export const resolveResponse = (res: Response) => async (
   return res[resolveMethodName]()
 }
 
-/** combineContainers :: {a} -> {a} -> {a} */
+/** combineContainers :: Container -> Container -> Container */
 export const combineContainers = (a: Container) => (
   b: Container
 ): Container => ({
@@ -74,7 +74,7 @@ export const combineContainers = (a: Container) => (
   options: { ...(a.options || {}), ...(b.options || {}) },
 })
 
-/** preset :: ({a} -> Promise b) -> {a} -> Promise b */
+/** preset :: Promise p => (Container -> p b) -> Container -> p c */
 export const preset = (
   fn: (container: Container) => Promise<any> // eslint-disable-line @typescript-eslint/no-explicit-any
 ) => (container: Container) => (url: string, init: Init, options: Options) =>

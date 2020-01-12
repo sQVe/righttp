@@ -2,7 +2,7 @@ import { Container, Init, Options } from './types'
 import { combineContainers, resolveResponse, preset } from './helpers'
 import { defaultContainer } from './constants'
 
-/** request :: {a} -> Promise b */
+/** request :: Container -> Promise a */
 const request = async (container: Container) => {
   const {
     url,
@@ -20,7 +20,7 @@ const request = async (container: Container) => {
 }
 
 /**
- * righttp :: (String, {a}, {b}) -> {k: v}
+ * righttp :: (String, Init, Options) -> {k: (Container -> Promise a)}
  *
  * TODO: Write proper JSDocs for `righttp` function and the functions it
  * returns.
@@ -36,5 +36,3 @@ export function righttp(url: string, init: Init, options: Options) {
     request: preset(request)(container),
   }
 }
-
-// const res = righttp('', { method: 'GET' }, { resolveAs: 'JSON' })
