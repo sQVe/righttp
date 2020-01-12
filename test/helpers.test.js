@@ -1,21 +1,70 @@
 import {
+  combineContainers,
+  combineUrls,
   createQuery,
-  sanitizeUrl,
   getResolveMethodName,
+  preset,
   resolveResponse,
 } from '../src/helpers'
-import { falsyValues } from './setup/constants'
-
-const resolveMethodMap = {
-  ArrayBuffer: 'arrayBuffer',
-  Blob: 'blob',
-  FormData: 'formData',
-  JSON: 'json',
-  Response: 'response',
-  Text: 'text',
-}
+import { falsyValues, resolveMethodMap } from './setup/constants'
+import { barContainer, fooContainer } from './setup/mocks'
 
 describe('Helpers', () => {
+  describe('combineContainers', () => {
+    it('should return a combined container', () => {
+      expect(combineContainers(fooContainer)(barContainer)).toEqual({
+        url: `${fooContainer.url}/${barContainer.url}`,
+        init: { ...fooContainer.init, ...barContainer.init },
+        options: { ...fooContainer.options, ...barContainer.options },
+      })
+    })
+
+    it('should handle missing values gracefully', () => {
+      expect(combineContainers({})({})).toEqual({
+        url: '',
+        init: {},
+        options: {},
+      })
+    })
+  })
+
+  describe('combineUrls', () => {
+    it('should return combined urls', () => {
+      expect(combineUrls(['https://www.foo.com', 'bar', 'baz'])).toBe(
+        'https://www.foo.com/bar/baz'
+      )
+    })
+
+    it('should sanitize leading and ending slashes between urls', () => {
+      expect(combineUrls(['foo/', 'bar'])).toBe('foo/bar')
+      expect(combineUrls(['foo', '/bar'])).toBe('foo/bar')
+      expect(combineUrls(['foo/', '/bar'])).toBe('foo/bar')
+    })
+
+    it('should not sanitize leading slash of first url', () => {
+      expect(combineUrls(['foo', 'bar'])).toBe('foo/bar')
+      expect(combineUrls(['/foo', 'bar'])).toBe('/foo/bar')
+    })
+
+    it('should not sanitize leading slash of last url', () => {
+      expect(combineUrls(['foo', 'bar'])).toBe('foo/bar')
+      expect(combineUrls(['foo', 'bar/'])).toBe('foo/bar/')
+    })
+
+    it('should return empty string when given no valid urls', () => {
+      expect(combineUrls(undefined)).toBe('')
+      expect(combineUrls([])).toBe('')
+      expect(combineUrls(falsyValues)).toBe('')
+    })
+
+    it('should return first url when given a single valid url', () => {
+      expect(combineUrls(['foo'])).toBe('foo')
+      expect(combineUrls(['/foo'])).toBe('/foo')
+      expect(combineUrls(['foo/'])).toBe('foo/')
+      expect(combineUrls(['/foo/'])).toBe('/foo/')
+    })
+  })
+
   describe('createQuery', () => {
     it('should return query string', () => {
       const query = createQuery({ foo: true, bar: 'baz' })
@@ -46,25 +95,62 @@ describe('Helpers', () => {
     })
   })
 
-  describe('sanitizeUrl', () => {
-    it('should remove leading slash from url', () => {
-      const url = sanitizeUrl('/foo/')
+  describe('preset', () => {
+    it('should return preset function with combined containers', () => {
+      const presetFn = preset(container => container)(fooContainer)(
+        ...Object.values(barContainer)
+      )
 
-      expect(url).toBe('foo/')
-    })
-
-    it('should add trailing slash to url', () => {
-      const url = sanitizeUrl('https://www.foo.com')
-
-      expect(url).toBe('https://www.foo.com/')
-    })
-
-    it('should return empty string', () => {
-      falsyValues.forEach(x => {
-        const url = sanitizeUrl(x)
-
-        expect(url).toBe('')
+      expect(presetFn).toEqual({
+        url: `${fooContainer.url}/${barContainer.url}`,
+        init: { ...fooContainer.init, ...barContainer.init },
+        options: { ...fooContainer.options, ...barContainer.options },
       })
+    })
+  })
+
+  describe('resolveResponse', () => {
+    const fooMock = jest.fn(() => 'foo')
+
+    beforeEach(fooMock.mockClear)
+
+    Object.entries(resolveMethodMap)
+      .filter(([type]) => !['JSON', 'Response'].includes(type))
+      .forEach(([type, method]) => {
+        const mock = fooMock
+        const res = { [method]: mock }
+
+        it(`should resolve as ${type}`, () => {
+          expect(resolveResponse(res, type)).resolves.toBe('foo')
+          expect(mock).toHaveBeenCalledTimes(1)
+        })
+      })
+
+    it('should resolve as JSON', () => {
+      const textMock = fooMock
+      const cloneMock = jest.fn(() => ({ text: textMock }))
+      const jsonMock = fooMock
+      const res = { json: jsonMock, clone: cloneMock }
+
+      expect(resolveResponse(res, 'JSON')).resolves.toBe('foo')
+      expect(textMock).toHaveBeenCalledTimes(1)
+      expect(cloneMock).toHaveBeenCalledTimes(1)
+      expect(jsonMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return undefined when resolved as JSON with empty response', () => {
+      const textMock = jest.fn(() => '')
+      const cloneMock = jest.fn(() => ({ text: textMock }))
+      const jsonMock = fooMock
+      const res = { json: jsonMock, clone: cloneMock }
+
+      expect(resolveResponse(res, 'JSON')).resolves.toBeUndefined()
+    })
+
+    it('should resolve as Response', () => {
+      const res = 'foo'
+
+      expect(resolveResponse(res, 'Response')).resolves.toBe(res)
     })
   })
 })

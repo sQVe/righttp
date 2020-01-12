@@ -8,6 +8,3 @@ export const compose = (
 
 /** isString :: String -> Boolean */
 export const isString = (val: unknown): val is string => typeof val === 'string'
-
-/** nth :: Number -> [a] -> a */
-export const nth = (idx: number) => <T, _>(arr: T[]) => arr.slice(idx)[0]
