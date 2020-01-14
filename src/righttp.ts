@@ -7,7 +7,7 @@ const request = async (container: Container) => {
   const {
     url,
     init,
-    options: { resolveAs = 'JSON' },
+    options: { resolveAs },
   } = container
 
   if (url.length === 0)

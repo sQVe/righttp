@@ -1,5 +1,304 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`righttp righttp request should make a request with our defaults 1`] = `
+Array [
+  Array [
+    "foo/bar",
+    Object {
+      "headers": Object {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      "method": "GET",
+    },
+  ],
+]
+`;
+
+exports[`righttp righttp request should resolve request as ArrayBuffer when resolveAs option is ArrayBuffer 1`] = `
+Array [
+  Array [
+    Response {
+      "size": 0,
+      "timeout": 0,
+      Symbol(Body internals): Object {
+        "body": Object {
+          "data": Array [
+            97,
+            114,
+            114,
+            97,
+            121,
+            66,
+            117,
+            102,
+            102,
+            101,
+            114,
+          ],
+          "type": "Buffer",
+        },
+        "disturbed": true,
+        "error": null,
+      },
+      Symbol(Response internals): Object {
+        "counter": undefined,
+        "headers": Headers {
+          Symbol(map): Object {},
+        },
+        "status": 200,
+        "statusText": "OK",
+        "url": undefined,
+      },
+    },
+  ],
+]
+`;
+
+exports[`righttp righttp request should resolve request as Blob when resolveAs option is Blob 1`] = `
+Array [
+  Array [
+    Response {
+      "size": 0,
+      "timeout": 0,
+      Symbol(Body internals): Object {
+        "body": Object {
+          "data": Array [
+            91,
+            111,
+            98,
+            106,
+            101,
+            99,
+            116,
+            32,
+            66,
+            108,
+            111,
+            98,
+            93,
+          ],
+          "type": "Buffer",
+        },
+        "disturbed": true,
+        "error": null,
+      },
+      Symbol(Response internals): Object {
+        "counter": undefined,
+        "headers": Headers {
+          Symbol(map): Object {
+            "Content-Type": Array [
+              "text/plain;charset=UTF-8",
+            ],
+          },
+        },
+        "status": 200,
+        "statusText": "OK",
+        "url": undefined,
+      },
+    },
+  ],
+]
+`;
+
+exports[`righttp righttp request should resolve request as FormData when resolveAs option is FormData 1`] = `
+Array [
+  Array [
+    Response {
+      "size": 0,
+      "timeout": 0,
+      Symbol(Body internals): Object {
+        "body": Object {
+          "data": Array [
+            91,
+            111,
+            98,
+            106,
+            101,
+            99,
+            116,
+            32,
+            70,
+            111,
+            114,
+            109,
+            68,
+            97,
+            116,
+            97,
+            93,
+          ],
+          "type": "Buffer",
+        },
+        "disturbed": false,
+        "error": null,
+      },
+      Symbol(Response internals): Object {
+        "counter": undefined,
+        "headers": Headers {
+          Symbol(map): Object {
+            "Content-Type": Array [
+              "text/plain;charset=UTF-8",
+            ],
+          },
+        },
+        "status": 200,
+        "statusText": "OK",
+        "url": undefined,
+      },
+    },
+  ],
+]
+`;
+
+exports[`righttp righttp request should resolve request as JSON when resolveAs option is JSON 1`] = `
+Array [
+  Array [
+    Response {
+      "size": 0,
+      "timeout": 0,
+      Symbol(Body internals): Object {
+        "body": Object {
+          "data": Array [
+            91,
+            34,
+            106,
+            115,
+            111,
+            110,
+            34,
+            93,
+          ],
+          "type": "Buffer",
+        },
+        "disturbed": true,
+        "error": null,
+      },
+      Symbol(Response internals): Object {
+        "counter": undefined,
+        "headers": Headers {
+          Symbol(map): Object {
+            "Content-Type": Array [
+              "text/plain;charset=UTF-8",
+            ],
+          },
+        },
+        "status": 200,
+        "statusText": "OK",
+        "url": undefined,
+      },
+    },
+  ],
+]
+`;
+
+exports[`righttp righttp request should resolve request as Response when resolveAs option is Response 1`] = `
+Response {
+  "size": 0,
+  "timeout": 0,
+  Symbol(Body internals): Object {
+    "body": Object {
+      "data": Array [
+        116,
+        101,
+        120,
+        116,
+      ],
+      "type": "Buffer",
+    },
+    "disturbed": false,
+    "error": null,
+  },
+  Symbol(Response internals): Object {
+    "counter": undefined,
+    "headers": Headers {
+      Symbol(map): Object {
+        "Content-Type": Array [
+          "text/plain;charset=UTF-8",
+        ],
+      },
+    },
+    "status": 200,
+    "statusText": "OK",
+    "url": undefined,
+  },
+}
+`;
+
+exports[`righttp righttp request should resolve request as Response when resolveAs option is Response 2`] = `
+Array [
+  Array [
+    Response {
+      "size": 0,
+      "timeout": 0,
+      Symbol(Body internals): Object {
+        "body": Object {
+          "data": Array [
+            116,
+            101,
+            120,
+            116,
+          ],
+          "type": "Buffer",
+        },
+        "disturbed": true,
+        "error": null,
+      },
+      Symbol(Response internals): Object {
+        "counter": undefined,
+        "headers": Headers {
+          Symbol(map): Object {
+            "Content-Type": Array [
+              "text/plain;charset=UTF-8",
+            ],
+          },
+        },
+        "status": 200,
+        "statusText": "OK",
+        "url": undefined,
+      },
+    },
+  ],
+]
+`;
+
+exports[`righttp righttp request should resolve request as Text when resolveAs option is Text 1`] = `
+Array [
+  Array [
+    Response {
+      "size": 0,
+      "timeout": 0,
+      Symbol(Body internals): Object {
+        "body": Object {
+          "data": Array [
+            116,
+            101,
+            120,
+            116,
+          ],
+          "type": "Buffer",
+        },
+        "disturbed": true,
+        "error": null,
+      },
+      Symbol(Response internals): Object {
+        "counter": undefined,
+        "headers": Headers {
+          Symbol(map): Object {
+            "Content-Type": Array [
+              "text/plain;charset=UTF-8",
+            ],
+          },
+        },
+        "status": 200,
+        "statusText": "OK",
+        "url": undefined,
+      },
+    },
+  ],
+]
+`;
+
 exports[`righttp righttp should combine url, init and options 1`] = `
 Array [
   Object {
