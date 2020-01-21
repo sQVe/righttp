@@ -1,3 +1,5 @@
+export type NotNil = bigint | boolean | number | object | string | symbol
+
 type HttpMethod =
   | 'CONNECT'
   | 'DELETE'
@@ -9,7 +11,10 @@ type HttpMethod =
   | 'PUT'
   | 'TRACE'
 
-export type ResponseResolve =
+type PayloadAsCallback = (payload: NotNil) => NotNil
+export type PayloadAs = PayloadAsCallback | null
+
+export type ResolveAs =
   | 'ArrayBuffer'
   | 'Blob'
   | 'FormData'
@@ -30,7 +35,8 @@ export type Init = RequestInit & {
 }
 
 export type Options = {
-  resolveAs?: ResponseResolve,
+  payloadAs?: PayloadAs,
+  resolveAs?: ResolveAs,
 }
 
 export type Container = {
