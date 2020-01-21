@@ -314,6 +314,7 @@ Array [
       },
       "options": Object {
         "baz": true,
+        "payloadAs": [Function],
         "resolveAs": "JSON",
       },
       "url": "foo",
@@ -344,6 +345,7 @@ Array [
       },
       "options": Object {
         "baz": true,
+        "payloadAs": [Function],
         "resolveAs": "JSON",
       },
       "url": "foo",

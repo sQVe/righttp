@@ -5,6 +5,7 @@ import {
   getResolveAsMethodName,
   preset,
   resolveResponse,
+  preparePayload,
 } from '../src/helpers'
 import { falsyValues, resolveAsMethodNameMap } from './setup/constants'
 import { barContainer, fooContainer } from './setup/mocks'
@@ -99,6 +100,23 @@ describe('Helpers', () => {
 
     it('should return method response given no resolveAs', () => {
       expect(getResolveAsMethodName()).toBe('response')
+    })
+  })
+
+  describe('preparePayload', () => {
+    const container = { options: { payloadAs: payload => 'foo' + payload } }
+
+    it('should return a prepared payload', () => {
+      expect(preparePayload('bar', container)).toBe('foobar')
+    })
+
+    it('should return payload when payload is nil', () => {
+      expect(preparePayload(null, container)).toBeNull()
+      expect(preparePayload(undefined, container)).toBeUndefined()
+    })
+
+    it('should return payload when payloadAs option is unset', () => {
+      expect(preparePayload('foo', { options: {} })).toBe('foo')
     })
   })
 
