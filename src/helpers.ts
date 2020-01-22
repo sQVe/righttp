@@ -1,10 +1,11 @@
 import {
   Container,
   Init,
+  NotNil,
   Options,
   QueryParams,
-  ResolveMethod,
   ResolveAs,
+  ResolveMethod,
 } from './types'
 import { isString } from './utility'
 
@@ -48,6 +49,13 @@ export const getResolveAsMethodName = (resolveAs?: ResolveAs) => {
 
   const caseSafeResolveAs = resolveAs.toLowerCase()
   return methodNameLookup[caseSafeResolveAs] || resolveAs
+}
+
+/** preparePayload :: Container -> a */
+export const preparePayload = (payload: NotNil, container: Container) => {
+  const { payloadAs } = container.options
+
+  return payload != null && payloadAs != null ? payloadAs(payload) : payload
 }
 
 /** resolveResponse :: Response a -> String -> Promise b */
