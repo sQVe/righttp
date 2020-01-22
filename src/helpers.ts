@@ -4,7 +4,7 @@ import {
   Options,
   QueryParams,
   ResolveMethod,
-  ResponseResolve,
+  ResolveAs,
 } from './types'
 import { isString } from './utility'
 
@@ -34,7 +34,7 @@ export const createQuery = (params: QueryParams) => {
 }
 
 /** getResolveAsMethodName :: String -> String */
-export const getResolveAsMethodName = (resolveAs?: ResponseResolve) => {
+export const getResolveAsMethodName = (resolveAs?: ResolveAs) => {
   const methodNameLookup: { [index: string]: ResolveMethod } = {
     arraybuffer: 'arrayBuffer',
     blob: 'blob',
@@ -52,7 +52,7 @@ export const getResolveAsMethodName = (resolveAs?: ResponseResolve) => {
 
 /** resolveResponse :: Response a -> String -> Promise b */
 export const resolveResponse = (res: Response) => async (
-  resolveAs?: ResponseResolve
+  resolveAs?: ResolveAs
 ) => {
   const resolveAsMethodName = getResolveAsMethodName(resolveAs)
 
