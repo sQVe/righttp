@@ -43,6 +43,9 @@ mockJest.enableMocks()
 describe('righttp', () => {
   beforeEach(() => {
     fetch.resetMocks()
+  })
+
+  afterEach(() => {
     jest.clearAllMocks()
   })
 

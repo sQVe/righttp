@@ -9,5 +9,8 @@ export const defaultContainer: Container = {
     },
     method: 'GET',
   },
-  options: { resolveAs: 'JSON' },
+  options: {
+    payloadAs: payload => JSON.stringify(payload),
+    resolveAs: 'JSON',
+  },
 }
