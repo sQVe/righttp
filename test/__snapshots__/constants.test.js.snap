@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`constants should have the correct default settings 1`] = `
+Object {
+  "init": Object {
+    "headers": Object {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    },
+    "method": "GET",
+  },
+  "options": Object {
+    "payloadAs": [Function],
+    "resolveAs": "JSON",
+  },
+  "url": "",
+}
+`;
