@@ -80,21 +80,5 @@
     "@babel/polyfill": "~7.8.0",
     "@babel/runtime": "~7.8.0",
     "core-js": "~3.6.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "jest"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix",
-      "jest --findRelatedTests"
-    ],
-    "*.json": [
-      "prettier --write"
-    ]
   }
 }
