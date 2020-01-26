@@ -107,16 +107,16 @@ describe('Helpers', () => {
     const container = { options: { payloadAs: payload => 'foo' + payload } }
 
     it('should return a prepared payload', () => {
-      expect(preparePayload('bar', container)).toBe('foobar')
+      expect(preparePayload(container)('bar')).toBe('foobar')
     })
 
     it('should return payload when payload is nil', () => {
-      expect(preparePayload(null, container)).toBeNull()
-      expect(preparePayload(undefined, container)).toBeUndefined()
+      expect(preparePayload(container)(null)).toBeNull()
+      expect(preparePayload(container)(undefined)).toBeUndefined()
     })
 
     it('should return payload when payloadAs option is unset', () => {
-      expect(preparePayload('foo', { options: {} })).toBe('foo')
+      expect(preparePayload({ options: {} })('foo')).toBe('foo')
     })
   })
 

@@ -51,8 +51,8 @@ export const getResolveAsMethodName = (resolveAs?: ResolveAs) => {
   return methodNameLookup[caseSafeResolveAs] || resolveAs
 }
 
-/** preparePayload :: Container -> a */
-export const preparePayload = (payload: NotNil, container: Container) => {
+/** preparePayload :: Container -> a -> b */
+export const preparePayload = (container: Container) => (payload: NotNil) => {
   const { payloadAs } = container.options
 
   return payload != null && payloadAs != null ? payloadAs(payload) : payload
