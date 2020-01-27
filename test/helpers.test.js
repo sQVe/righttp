@@ -103,6 +103,8 @@ describe('Helpers', () => {
     })
   })
 
+  // TODO: Write handleResponse tests.
+
   describe('preparePayload', () => {
     const container = {
       options: { payloadAs: payload => 'foo' + payload },

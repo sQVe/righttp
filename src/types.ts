@@ -1,19 +1,7 @@
 export type NotNil = bigint | boolean | number | object | string | symbol
 
-type HttpMethod =
-  | 'CONNECT'
-  | 'DELETE'
-  | 'GET'
-  | 'HEAD'
-  | 'OPTIONS'
-  | 'PATCH'
-  | 'POST'
-  | 'PUT'
-  | 'TRACE'
-
-type PayloadAsCallback = (payload: NotNil) => NotNil
-export type PayloadAs = PayloadAsCallback | null
-
+export type OnResponse = ((res: Response) => void) | null
+export type PayloadAs = ((payload: NotNil) => NotNil) | null
 export type ResolveAs =
   | 'ArrayBuffer'
   | 'Blob'
@@ -31,12 +19,22 @@ export type ResolveMethod =
   | 'text'
 
 export type Init = RequestInit & {
-  method?: HttpMethod,
+  method?:
+    | 'CONNECT'
+    | 'DELETE'
+    | 'GET'
+    | 'HEAD'
+    | 'OPTIONS'
+    | 'PATCH'
+    | 'POST'
+    | 'PUT'
+    | 'TRACE',
 }
 
 export type Options = {
   payloadAs?: PayloadAs,
   resolveAs?: ResolveAs,
+  onResponse?: OnResponse,
 }
 
 export type Container = {
@@ -46,5 +44,5 @@ export type Container = {
 }
 
 export type QueryParams = {
-  [key: string]: string | number | boolean,
+  [key: string]: number | boolean | string,
 }

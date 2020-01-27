@@ -2,6 +2,7 @@ import {
   Container,
   Init,
   NotNil,
+  OnResponse,
   Options,
   QueryParams,
   ResolveAs,
@@ -50,6 +51,10 @@ export const getResolveAsMethodName = (resolveAs?: ResolveAs) => {
   const caseSafeResolveAs = resolveAs.toLowerCase()
   return methodNameLookup[caseSafeResolveAs] || resolveAs
 }
+
+/** handleResponse :: Response r => (r a -> void) -> r a -> void */
+export const handleResponse = (onResponse?: OnResponse) => (res: Response) =>
+  onResponse && onResponse(res)
 
 /** preparePayload :: Container -> a -> b */
 export const preparePayload = (container: Container) => (payload: NotNil) => {
