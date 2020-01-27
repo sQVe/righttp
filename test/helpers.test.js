@@ -104,7 +104,9 @@ describe('Helpers', () => {
   })
 
   describe('preparePayload', () => {
-    const container = { options: { payloadAs: payload => 'foo' + payload } }
+    const container = {
+      options: { payloadAs: payload => 'foo' + payload },
+    }
 
     it('should return a prepared payload', () => {
       expect(preparePayload(container)('bar')).toBe('foobar')

@@ -3,19 +3,18 @@ const mockLastPresetUnary = jest.fn()
 const mockLastResolveResponseUnary = jest.fn()
 
 jest.mock('../src/helpers', () => {
-  const { combineContainers, resolveResponse, preset } = jest.requireActual(
-    '../src/helpers'
-  )
+  const helpers = jest.requireActual('../src/helpers')
 
   return {
+    ...helpers,
     combineContainers: jest.fn(a =>
       mockLastCombineContainerUnary.mockImplementation(b =>
-        combineContainers(a)(b)
+        helpers.combineContainers(a)(b)
       )
     ),
     resolveResponse: jest.fn(res =>
       mockLastResolveResponseUnary.mockImplementation(resolveAs =>
-        resolveResponse(
+        helpers.resolveResponse(
           resolveAs === 'FormData'
             ? // Mock formData method due to lack of support in node-fetch.
               { formData: () => resolveAs }
@@ -24,7 +23,9 @@ jest.mock('../src/helpers', () => {
       )
     ),
     preset: jest.fn(fn =>
-      mockLastPresetUnary.mockImplementation(container => preset(fn)(container))
+      mockLastPresetUnary.mockImplementation(container =>
+        helpers.preset(fn)(container)
+      )
     ),
   }
 })
