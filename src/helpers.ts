@@ -81,8 +81,8 @@ export const resolveResponse = (res: Response) => async (
 }
 
 /** combineContainers :: Container -> Container -> Container */
-export const combineContainers = (a: Container) => (
-  b: Container
+export const combineContainers = (a: Partial<Container>) => (
+  b: Partial<Container>
 ): Container => ({
   url: combineUrls([a.url, b.url]),
   init: { ...(a.init || {}), ...(b.init || {}) },
