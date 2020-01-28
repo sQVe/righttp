@@ -1,7 +1,7 @@
 export type NotNil = bigint | boolean | number | object | string | symbol
 
 export type OnResponse = ((res: Response) => void) | null
-export type PayloadAs = ((payload: NotNil) => NotNil) | null
+export type PayloadAs = ((payload: NotNil) => BodyInit) | null
 export type ResolveAs =
   | 'ArrayBuffer'
   | 'Blob'

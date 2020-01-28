@@ -3,9 +3,10 @@ import {
   combineUrls,
   createQuery,
   getResolveAsMethodName,
+  handleResponse,
+  preparePayload,
   preset,
   resolveResponse,
-  preparePayload,
 } from '../src/helpers'
 import { falsyValues, resolveAsMethodNameMap } from './setup/constants'
 import { barContainer, fooContainer } from './setup/mocks'
@@ -103,7 +104,23 @@ describe('Helpers', () => {
     })
   })
 
-  // TODO: Write handleResponse tests.
+  describe('handleReponse', () => {
+    const payload = 'foo'
+
+    it('should handle the given response', () => {
+      const mockOnResponse = jest.fn()
+
+      handleResponse(mockOnResponse)('foo')
+
+      expect(mockOnResponse).toHaveBeenCalledTimes(1)
+      expect(mockOnResponse).toHaveBeenCalledWith(payload)
+    })
+
+    it('should return onResponse when onResponse is nil', () => {
+      expect(handleResponse(undefined)(payload)).toBeUndefined()
+      expect(handleResponse(null)(payload)).toBeNull()
+    })
+  })
 
   describe('preparePayload', () => {
     const container = {

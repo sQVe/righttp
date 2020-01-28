@@ -1,4 +1,5 @@
 const mockLastCombineContainerUnary = jest.fn()
+const mockLastHandleResponseUnary = jest.fn()
 const mockLastPresetUnary = jest.fn()
 const mockLastResolveResponseUnary = jest.fn()
 
@@ -10,6 +11,11 @@ jest.mock('../src/helpers', () => {
     combineContainers: jest.fn(a =>
       mockLastCombineContainerUnary.mockImplementation(b =>
         helpers.combineContainers(a)(b)
+      )
+    ),
+    handleResponse: jest.fn(a =>
+      mockLastHandleResponseUnary.mockImplementation(b =>
+        helpers.handleResponse(a)(b)
       )
     ),
     resolveResponse: jest.fn(res =>
@@ -33,7 +39,12 @@ jest.mock('../src/helpers', () => {
 import mockJest from 'jest-fetch-mock'
 import { Response } from 'cross-fetch'
 
-import { combineContainers, resolveResponse, preset } from '../src/helpers'
+import {
+  combineContainers,
+  handleResponse,
+  resolveResponse,
+  preset,
+} from '../src/helpers'
 import { commonHttpStatuses, resolveAsMethodNameMap } from './setup/constants'
 import { defaultContainer } from '../src/constants'
 import { resolveAsResponses } from './setup/mocks'
@@ -199,6 +210,21 @@ describe('righttp', () => {
         expect(subject).toBe(resolveAsResponses.Text)
         expect(fetch).toHaveBeenCalledTimes(1)
         expect(mockLastResolveResponseUnary).toHaveBeenCalledWith('Text')
+      })
+
+      it('should call handleResponse with onResponse and response', async () => {
+        expect.assertions(4)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const onResponse = () => {}
+        const subject = await righttp().request('foo', undefined, {
+          onResponse,
+        })
+
+        expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(handleResponse).toHaveBeenCalledTimes(1)
+        expect(handleResponse).toHaveBeenCalledWith(onResponse)
+        expect(mockLastHandleResponseUnary.mock.calls).toMatchSnapshot()
       })
 
       Object.entries(resolveAsResponses).forEach(([resolveAs, res]) => {

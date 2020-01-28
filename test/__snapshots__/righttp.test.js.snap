@@ -1,5 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`righttp righttp request should call handleResponse with onResponse and response 1`] = `
+Array [
+  Array [
+    Response {
+      "size": 0,
+      "timeout": 0,
+      Symbol(Body internals): Object {
+        "body": Object {
+          "data": Array [
+            91,
+            34,
+            106,
+            115,
+            111,
+            110,
+            34,
+            93,
+          ],
+          "type": "Buffer",
+        },
+        "disturbed": true,
+        "error": null,
+      },
+      Symbol(Response internals): Object {
+        "counter": undefined,
+        "headers": Headers {
+          Symbol(map): Object {
+            "Content-Type": Array [
+              "text/plain;charset=UTF-8",
+            ],
+          },
+        },
+        "status": 200,
+        "statusText": "OK",
+        "url": undefined,
+      },
+    },
+  ],
+]
+`;
+
 exports[`righttp righttp request should make a request with our defaults 1`] = `
 Array [
   Array [
