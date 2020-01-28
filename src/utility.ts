@@ -6,5 +6,6 @@ export const compose = (
     ...args: any[] // eslint-disable-line @typescript-eslint/no-explicit-any
   ) => f(g(...args)))
 
-/** isString :: String -> Boolean */
-export const isString = (val: unknown): val is string => typeof val === 'string'
+/** isNonEmptyString :: String -> Boolean */
+export const isNonEmptyString = (val: unknown): val is string =>
+  typeof val === 'string' && val.length > 0

@@ -8,15 +8,15 @@ import {
   ResolveAs,
   ResolveMethod,
 } from './types'
-import { isString } from './utility'
+import { isNonEmptyString } from './utility'
 
 /** combineUrls :: [String] -> String */
-export const combineUrls = (urls: string[]) => {
+export const combineUrls = (urls: (string | undefined)[]) => {
   const addTrailingSlash = (x: string) => (x.endsWith('/') ? x : `${x}/`)
   const removeLeadingSlash = (x: string) =>
     x.startsWith('/') ? x.substring(1) : x
 
-  const validUrls = (urls || []).filter(x => isString(x) && x.length > 0)
+  const validUrls = (urls || []).filter(isNonEmptyString)
 
   if (validUrls.length === 0) return ''
   if (validUrls.length === 1) return validUrls[0]
