@@ -1,9 +1,7 @@
 import {
   Container,
-  Init,
   NotNil,
   OnResponse,
-  Options,
   QueryParams,
   ResolveAs,
   ResolveMethod,
@@ -88,9 +86,3 @@ export const combineContainers = (a: Partial<Container>) => (
   init: { ...(a.init || {}), ...(b.init || {}) },
   options: { ...(a.options || {}), ...(b.options || {}) },
 })
-
-/** preset :: Promise p => (Container -> p b) -> Container -> p c */
-export const preset = (
-  fn: (container: Container) => Promise<any> // eslint-disable-line @typescript-eslint/no-explicit-any
-) => (container: Container) => (url: string, init: Init, options: Options) =>
-  fn(combineContainers(container)({ url, init, options }))

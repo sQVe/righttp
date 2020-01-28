@@ -13,17 +13,3 @@ Object {
   "url": "foo/bar",
 }
 `;
-
-exports[`Helpers preset should return preset function with combined containers 1`] = `
-Object {
-  "init": Object {
-    "bar": true,
-    "foo": false,
-  },
-  "options": Object {
-    "bar": true,
-    "foo": false,
-  },
-  "url": "foo/bar",
-}
-`;

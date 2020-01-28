@@ -1,10 +1,5 @@
 import { Container, Init, Options } from './types'
-import {
-  combineContainers,
-  handleResponse,
-  preset,
-  resolveResponse,
-} from './helpers'
+import { combineContainers, handleResponse, resolveResponse } from './helpers'
 import { defaultContainer } from './constants'
 
 /** request :: Container -> Promise a */
@@ -33,13 +28,15 @@ const request = async (container: Container) => {
  * returns.
  */
 export function righttp(url: string, init: Init, options: Options) {
-  const container = combineContainers(defaultContainer)({
+  const presetContainer = combineContainers(defaultContainer)({
     url,
     init,
     options,
   })
+  const presetCombine = combineContainers(presetContainer)
 
   return {
-    request: preset(request)(container),
+    request: (url: string, init: Init, options: Options) =>
+      request(presetCombine({ url, init, options })),
   }
 }

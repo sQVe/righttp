@@ -5,7 +5,6 @@ import {
   getResolveAsMethodName,
   handleResponse,
   preparePayload,
-  preset,
   resolveResponse,
 } from '../src/helpers'
 import { falsyValues, resolveAsMethodNameMap } from './setup/constants'
@@ -138,16 +137,6 @@ describe('Helpers', () => {
 
     it('should return payload when payloadAs option is unset', () => {
       expect(preparePayload({ options: {} })('foo')).toBe('foo')
-    })
-  })
-
-  describe('preset', () => {
-    it('should return preset function with combined containers', () => {
-      const presetFn = preset(container => container)(fooContainer)(
-        ...Object.values(barContainer)
-      )
-
-      expect(presetFn).toMatchSnapshot()
     })
   })
 

@@ -1,6 +1,5 @@
 const mockLastCombineContainerUnary = jest.fn()
 const mockLastHandleResponseUnary = jest.fn()
-const mockLastPresetUnary = jest.fn()
 const mockLastResolveResponseUnary = jest.fn()
 
 jest.mock('../src/helpers', () => {
@@ -28,11 +27,6 @@ jest.mock('../src/helpers', () => {
         )(resolveAs)
       )
     ),
-    preset: jest.fn(fn =>
-      mockLastPresetUnary.mockImplementation(container =>
-        helpers.preset(fn)(container)
-      )
-    ),
   }
 })
 
@@ -43,7 +37,6 @@ import {
   combineContainers,
   handleResponse,
   resolveResponse,
-  preset,
 } from '../src/helpers'
 import { commonHttpStatuses, resolveAsMethodNameMap } from './setup/constants'
 import { defaultContainer } from '../src/constants'
@@ -81,27 +74,17 @@ describe('righttp', () => {
     it('should set defaults for our container', () => {
       righttp()
 
-      expect(combineContainers).toHaveBeenCalledTimes(1)
+      expect(combineContainers).toHaveBeenCalledTimes(2)
       expect(combineContainers).toHaveBeenCalledWith(defaultContainer)
     })
 
     it('should combine url, init and options', () => {
       righttp(...Object.values(container))
 
-      expect(combineContainers).toHaveBeenCalledTimes(1)
+      expect(combineContainers).toHaveBeenCalledTimes(2)
       expect(mockLastCombineContainerUnary).toHaveBeenCalledTimes(1)
       expect(mockLastCombineContainerUnary).toHaveBeenCalledWith(container)
       expect(mockLastCombineContainerUnary.mock.results).toMatchSnapshot()
-    })
-
-    it('should preset our API', () => {
-      righttp(...Object.values(container))
-
-      expect(preset).toHaveBeenCalledTimes(1)
-      expect(preset.mock.calls).toMatchSnapshot()
-      expect(mockLastPresetUnary).toHaveBeenCalledTimes(1)
-      expect(mockLastPresetUnary.mock.calls).toMatchSnapshot()
-      expect(mockLastPresetUnary.mock.results).toMatchSnapshot()
     })
 
     describe('request', () => {
