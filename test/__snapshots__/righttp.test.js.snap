@@ -341,25 +341,20 @@ Array [
 `;
 
 exports[`righttp righttp should combine url, init and options 1`] = `
-Array [
-  Object {
-    "type": "return",
-    "value": Object {
-      "init": Object {
-        "bar": true,
-        "headers": Object {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        "method": "GET",
-      },
-      "options": Object {
-        "baz": true,
-        "payloadAs": [Function],
-        "resolveAs": "JSON",
-      },
-      "url": "foo",
+Object {
+  "init": Object {
+    "bar": true,
+    "headers": Object {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
     },
+    "method": "GET",
   },
-]
+  "options": Object {
+    "baz": true,
+    "payloadAs": [Function],
+    "resolveAs": "JSON",
+  },
+  "url": "foo",
+}
 `;

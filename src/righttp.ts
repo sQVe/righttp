@@ -36,6 +36,7 @@ export function righttp(url: string, init: Init, options: Options) {
   const presetCombine = combineContainers(presetContainer)
 
   return {
+    container: presetContainer,
     request: (url: string, init: Init, options: Options) =>
       request(presetCombine({ url, init, options })),
   }

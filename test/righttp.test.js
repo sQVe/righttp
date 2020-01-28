@@ -63,11 +63,11 @@ describe('righttp', () => {
 
     it('should return an API', () => {
       const subject = righttp(...Object.values(container))
-      const apiMethods = ['request']
+      const apiMethods = ['container', 'request']
 
       expect(Object.keys(subject).length).toEqual(apiMethods.length)
-      apiMethods.forEach(method => {
-        expect(typeof subject[method]).toBe('function')
+      apiMethods.forEach(key => {
+        expect(typeof subject[key]).toBeDefined()
       })
     })
 
@@ -79,12 +79,12 @@ describe('righttp', () => {
     })
 
     it('should combine url, init and options', () => {
-      righttp(...Object.values(container))
+      const subject = righttp(...Object.values(container))
 
+      expect(subject.container).toMatchSnapshot()
       expect(combineContainers).toHaveBeenCalledTimes(2)
       expect(mockLastCombineContainerUnary).toHaveBeenCalledTimes(1)
       expect(mockLastCombineContainerUnary).toHaveBeenCalledWith(container)
-      expect(mockLastCombineContainerUnary.mock.results).toMatchSnapshot()
     })
 
     describe('request', () => {
