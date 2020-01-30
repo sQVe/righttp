@@ -55,10 +55,10 @@ export const handleResponse = (onResponse?: OnResponse) => (res: Response) =>
   onResponse && onResponse(res)
 
 /** preparePayload :: Container -> a -> b */
-export const preparePayload = (container: Container) => (payload: NotNil) => {
+export const preparePayload = (container: Container) => (data: NotNil) => {
   const { payloadAs } = container.options
 
-  return payload != null && payloadAs != null ? payloadAs(payload) : payload
+  return payloadAs && payloadAs(data)
 }
 
 /** resolveResponse :: Response a -> String -> Promise b */

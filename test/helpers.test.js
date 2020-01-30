@@ -130,13 +130,9 @@ describe('Helpers', () => {
       expect(preparePayload(container)('bar')).toBe('foobar')
     })
 
-    it('should return payload when payload is nil', () => {
-      expect(preparePayload(container)(null)).toBeNull()
-      expect(preparePayload(container)(undefined)).toBeUndefined()
-    })
-
-    it('should return payload when payloadAs option is unset', () => {
-      expect(preparePayload({ options: {} })('foo')).toBe('foo')
+    it('should return payloadAs when payloadAs option is nil', () => {
+      expect(preparePayload({ options: {} })('foo')).toBeUndefined()
+      expect(preparePayload({ options: { payloadAs: null } })('foo')).toBeNull()
     })
   })
 
