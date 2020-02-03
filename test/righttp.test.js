@@ -46,13 +46,8 @@ import { righttp } from '../src/righttp'
 mockJest.enableMocks()
 
 describe('righttp', () => {
-  beforeEach(() => {
-    fetch.resetMocks()
-  })
-
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
+  beforeEach(fetch.resetMocks)
+  afterEach(jest.clearAllMocks)
 
   describe('righttp', () => {
     const container = {

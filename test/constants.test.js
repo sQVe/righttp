@@ -7,9 +7,7 @@ describe('constants', () => {
     }
   })
 
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
+  afterEach(jest.clearAllMocks)
 
   it('should have the correct default settings', () => {
     const payload = 'JSON'
