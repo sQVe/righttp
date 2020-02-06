@@ -6,11 +6,48 @@ import {
   handleResponse,
   preparePayload,
   resolveResponse,
+  armInitWithPayload,
 } from '../src/helpers'
 import { falsyValues, resolveAsMethodNameMap } from './setup/constants'
 import { barContainer, fooContainer } from './setup/mocks'
 
 describe('Helpers', () => {
+  afterEach(jest.clearAllMocks)
+
+  describe('armInitWithPayload', () => {
+    const mockPayloadAs = jest.fn(payload => payload)
+
+    it('should arm init with a payload', () => {
+      const subject = armInitWithPayload({ foo: true })({
+        options: { payloadAs: mockPayloadAs },
+      })('bar')
+
+      expect(subject).toEqual({
+        body: 'bar',
+        foo: true,
+      })
+      expect(mockPayloadAs).toHaveReturnedTimes(1)
+    })
+
+    it('should return init when data is nil', () => {
+      expect(
+        armInitWithPayload({ foo: true })({
+          options: { payloadAs: mockPayloadAs },
+        })(undefined)
+      ).toEqual({
+        foo: true,
+      })
+      expect(
+        armInitWithPayload({ foo: true })({
+          options: { payloadAs: mockPayloadAs },
+        })(null)
+      ).toEqual({
+        foo: true,
+      })
+      expect(mockPayloadAs).toHaveReturnedTimes(0)
+    })
+  })
+
   describe('combineContainers', () => {
     it('should return a combined container', () => {
       expect(combineContainers(fooContainer)(barContainer)).toMatchSnapshot()
@@ -138,8 +175,6 @@ describe('Helpers', () => {
 
   describe('resolveResponse', () => {
     const fooMock = jest.fn(() => 'foo')
-
-    beforeEach(fooMock.mockClear)
 
     Object.entries(resolveAsMethodNameMap)
       .filter(([type]) => !['JSON', 'Response'].includes(type))

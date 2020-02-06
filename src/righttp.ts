@@ -37,6 +37,18 @@ export function righttp(url: string, init: Init, options: Options) {
 
   return {
     container: presetContainer,
+    // delete: (url: string, data?: NotNil) =>
+    //   request(
+    //     presetCombine({
+    //       url,
+    //       init: armWithPayload({})(data),
+    //     })
+    //   ),
+
+    // TODO: get.
+    // TODO: patch.
+    // TODO: post.
+    // TODO: put.
     request: (url: string, init: Init, options: Options) =>
       request(presetCombine({ url, init, options })),
   }

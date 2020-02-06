@@ -1,5 +1,6 @@
 import {
   Container,
+  Init,
   NotNil,
   OnResponse,
   QueryParams,
@@ -60,6 +61,11 @@ export const preparePayload = (container: Container) => (data: NotNil) => {
 
   return payloadAs && payloadAs(data)
 }
+
+/** armInitWithPayload :: Init => i a -> Container -> b -> i a */
+export const armInitWithPayload = (init: Init) => (container: Container) => (
+  data?: NotNil
+) => (data == null ? init : { ...init, body: preparePayload(container)(data) })
 
 /** resolveResponse :: Response a -> String -> Promise b */
 export const resolveResponse = (res: Response) => async (
