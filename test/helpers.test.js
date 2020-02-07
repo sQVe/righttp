@@ -4,9 +4,9 @@ import {
   createQuery,
   getResolveAsMethodName,
   handleResponse,
+  loadPayload,
   preparePayload,
   resolveResponse,
-  armInitWithPayload,
 } from '../src/helpers'
 import { falsyValues, resolveAsMethodNameMap } from './setup/constants'
 import { barContainer, fooContainer } from './setup/mocks'
@@ -14,36 +14,33 @@ import { barContainer, fooContainer } from './setup/mocks'
 describe('Helpers', () => {
   afterEach(jest.clearAllMocks)
 
-  describe('armInitWithPayload', () => {
+  describe('loadPayload', () => {
     const mockPayloadAs = jest.fn(payload => payload)
 
     it('should arm init with a payload', () => {
-      const subject = armInitWithPayload({ foo: true })({
+      const subject = loadPayload({
+        init: { foo: true },
         options: { payloadAs: mockPayloadAs },
       })('bar')
 
-      expect(subject).toEqual({
+      expect(subject.init).toEqual({
         body: 'bar',
         foo: true,
       })
       expect(mockPayloadAs).toHaveReturnedTimes(1)
     })
 
-    it('should return init when data is nil', () => {
-      expect(
-        armInitWithPayload({ foo: true })({
-          options: { payloadAs: mockPayloadAs },
-        })(undefined)
-      ).toEqual({
-        foo: true,
-      })
-      expect(
-        armInitWithPayload({ foo: true })({
-          options: { payloadAs: mockPayloadAs },
-        })(null)
-      ).toEqual({
-        foo: true,
-      })
+    it('should return container when data is nil', () => {
+      ;[undefined, null].forEach(x =>
+        expect(
+          loadPayload({
+            init: {
+              foo: true,
+            },
+            options: { payloadAs: mockPayloadAs },
+          })(x)
+        ).toMatchSnapshot()
+      )
       expect(mockPayloadAs).toHaveReturnedTimes(0)
     })
   })

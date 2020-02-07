@@ -13,3 +13,25 @@ Object {
   "url": "foo/bar",
 }
 `;
+
+exports[`Helpers loadPayload should return container when data is nil 1`] = `
+Object {
+  "init": Object {
+    "foo": true,
+  },
+  "options": Object {
+    "payloadAs": [MockFunction],
+  },
+}
+`;
+
+exports[`Helpers loadPayload should return container when data is nil 2`] = `
+Object {
+  "init": Object {
+    "foo": true,
+  },
+  "options": Object {
+    "payloadAs": [MockFunction],
+  },
+}
+`;
