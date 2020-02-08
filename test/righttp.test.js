@@ -1,6 +1,7 @@
 const mockLastCombineContainerUnary = jest.fn()
 const mockLastHandleResponseUnary = jest.fn()
 const mockLastResolveResponseUnary = jest.fn()
+const mockLastLoadPayloadUnary = jest.fn()
 
 jest.mock('../src/helpers', () => {
   const helpers = jest.requireActual('../src/helpers')
@@ -15,6 +16,11 @@ jest.mock('../src/helpers', () => {
     handleResponse: jest.fn(a =>
       mockLastHandleResponseUnary.mockImplementation(b =>
         helpers.handleResponse(a)(b)
+      )
+    ),
+    loadPayload: jest.fn(a =>
+      mockLastLoadPayloadUnary.mockImplementation(b =>
+        helpers.loadPayload(a)(b)
       )
     ),
     resolveResponse: jest.fn(res =>
@@ -36,6 +42,7 @@ import { Response } from 'cross-fetch'
 import {
   combineContainers,
   handleResponse,
+  loadPayload,
   resolveResponse,
 } from '../src/helpers'
 import { commonHttpStatuses, resolveAsMethodNameMap } from './setup/constants'
@@ -58,7 +65,7 @@ describe('righttp', () => {
 
     it('should return an API', () => {
       const subject = righttp(...Object.values(container))
-      const apiMethods = ['container', 'request']
+      const apiMethods = ['container', 'del', 'request']
 
       expect(Object.keys(subject).length).toEqual(apiMethods.length)
       apiMethods.forEach(key => {
@@ -66,7 +73,7 @@ describe('righttp', () => {
       })
     })
 
-    it('should set defaults for our container', () => {
+    it('should set preset defaults for our container', () => {
       righttp()
 
       expect(combineContainers).toHaveBeenCalledTimes(2)
@@ -82,12 +89,99 @@ describe('righttp', () => {
       expect(mockLastCombineContainerUnary).toHaveBeenCalledWith(container)
     })
 
-    describe('request', () => {
-      it('should make a request with our defaults', async () => {
+    describe('del', () => {
+      it('should use our preset defaults', async () => {
         expect.assertions(3)
         fetch.mockResponse(resolveAsResponses.JSON)
 
-        const subject = await righttp('foo').request('bar')
+        const subject = await righttp().del('foo')
+
+        expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect(fetch.mock.calls).toMatchSnapshot()
+      })
+
+      it('should preset a URL', async () => {
+        expect.assertions(3)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const subject = await righttp('preset').del('foo')
+        const [firstCall] = fetch.mock.calls
+        const [url] = firstCall
+
+        expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect(url).toBe('preset/foo')
+      })
+
+      it('should set DELETE as method in init', async () => {
+        expect.assertions(3)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const subject = await righttp('foo', { method: 'GET' }).del('bar')
+        const [firstCall] = fetch.mock.calls
+        const [_, init] = firstCall
+
+        expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect(init.method).toBe('DELETE')
+      })
+
+      it('should load payload in init', async () => {
+        expect.assertions(5)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const subject = await righttp('foo', {}, { payloadAs: x => x }).del(
+          'bar',
+          'baz'
+        )
+        const [firstCall] = fetch.mock.calls
+        const [_, init] = firstCall
+
+        expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(loadPayload).toHaveBeenCalledTimes(1)
+        expect(mockLastLoadPayloadUnary).toHaveBeenCalledWith('baz')
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect(init.body).toBe('baz')
+      })
+
+      it('should not load payload in init when data is nil', async () => {
+        expect.assertions(7)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const firstSubject = await righttp(
+          'foo',
+          {},
+          { payloadAs: x => x }
+        ).del('bar')
+        const secondSubject = await righttp(
+          'foo',
+          {},
+          { payloadAs: x => x }
+        ).del('bar', null)
+        const [firstCall, secondCall] = fetch.mock.calls
+        const [_, firstInit] = firstCall
+        const [__, secondInit] = secondCall
+
+        expect(firstSubject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(secondSubject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(loadPayload).toHaveBeenCalledTimes(2)
+        expect(mockLastLoadPayloadUnary.mock.calls).toEqual([
+          [undefined],
+          [null],
+        ])
+        expect(fetch).toHaveBeenCalledTimes(2)
+        expect(firstInit.body).toBeUndefined()
+        expect(secondInit.body).toBeUndefined()
+      })
+    })
+
+    describe('request', () => {
+      it('should use our preset defaults', async () => {
+        expect.assertions(3)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const subject = await righttp().request('foo')
 
         expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
         expect(fetch).toHaveBeenCalledTimes(1)

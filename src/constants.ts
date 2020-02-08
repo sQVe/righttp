@@ -10,7 +10,7 @@ export const defaultContainer: Container = {
     method: 'GET',
   },
   options: {
-    payloadAs: payload => JSON.stringify(payload),
+    payloadAs: x => JSON.stringify(x),
     resolveAs: 'JSON',
   },
 }

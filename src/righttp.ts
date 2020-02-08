@@ -1,5 +1,10 @@
-import { Container, Init, Options } from './types'
-import { combineContainers, handleResponse, resolveResponse } from './helpers'
+import { Container, Init, Options, NotNil } from './types'
+import {
+  combineContainers,
+  handleResponse,
+  loadPayload,
+  resolveResponse,
+} from './helpers'
 import { defaultContainer } from './constants'
 
 /** request :: Container -> Promise a */
@@ -37,13 +42,13 @@ export function righttp(url: string, init: Init, options: Options) {
 
   return {
     container: presetContainer,
-    // delete: (url: string, data?: NotNil) =>
-    //   request(
-    //     presetCombine({
-    //       url,
-    //       init: armWithPayload({})(data),
-    //     })
-    //   ),
+    del: (url: string, data?: NotNil) => {
+      const container = loadPayload(
+        presetCombine({ url, init: { method: 'DELETE' } })
+      )(data)
+
+      return request(container)
+    },
 
     // TODO: get.
     // TODO: patch.

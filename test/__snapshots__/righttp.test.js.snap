@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`righttp righttp del should use our preset defaults 1`] = `
+Array [
+  Array [
+    "foo",
+    Object {
+      "headers": Object {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      "method": "DELETE",
+    },
+  ],
+]
+`;
+
 exports[`righttp righttp request should call handleResponse with onResponse and response 1`] = `
 Array [
   Array [
@@ -36,21 +51,6 @@ Array [
         "statusText": "OK",
         "url": undefined,
       },
-    },
-  ],
-]
-`;
-
-exports[`righttp righttp request should make a request with our defaults 1`] = `
-Array [
-  Array [
-    "foo/bar",
-    Object {
-      "headers": Object {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      "method": "GET",
     },
   ],
 ]
@@ -335,6 +335,21 @@ Array [
         "statusText": "OK",
         "url": undefined,
       },
+    },
+  ],
+]
+`;
+
+exports[`righttp righttp request should use our preset defaults 1`] = `
+Array [
+  Array [
+    "foo",
+    Object {
+      "headers": Object {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      "method": "GET",
     },
   ],
 ]

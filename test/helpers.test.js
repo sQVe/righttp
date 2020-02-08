@@ -15,7 +15,7 @@ describe('Helpers', () => {
   afterEach(jest.clearAllMocks)
 
   describe('loadPayload', () => {
-    const mockPayloadAs = jest.fn(payload => payload)
+    const mockPayloadAs = jest.fn(x => x)
 
     it('should arm init with a payload', () => {
       const subject = loadPayload({
