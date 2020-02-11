@@ -15,6 +15,21 @@ Array [
 ]
 `;
 
+exports[`righttp righttp get should use our preset defaults 1`] = `
+Array [
+  Array [
+    "foo",
+    Object {
+      "headers": Object {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      "method": "GET",
+    },
+  ],
+]
+`;
+
 exports[`righttp righttp request should call handleResponse with onResponse and response 1`] = `
 Array [
   Array [

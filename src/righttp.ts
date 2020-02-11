@@ -1,6 +1,7 @@
-import { Container, Init, Options, NotNil } from './types'
+import { Container, Init, Options, NotNil, QueryParams } from './types'
 import {
   combineContainers,
+  createQuery,
   handleResponse,
   loadPayload,
   resolveResponse,
@@ -46,6 +47,14 @@ export function righttp(url: string, init: Init, options: Options) {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'DELETE' } })
       )(data)
+
+      return request(container)
+    },
+    get: (url: string, queryParams?: QueryParams) => {
+      const container = presetCombine({
+        url: queryParams == null ? url : url + '?' + createQuery(queryParams),
+        init: { method: 'GET' },
+      })
 
       return request(container)
     },

@@ -65,7 +65,7 @@ describe('righttp', () => {
 
     it('should return an API', () => {
       const subject = righttp(...Object.values(container))
-      const apiMethods = ['container', 'del', 'request']
+      const apiMethods = ['container', 'del', 'get', 'request']
 
       expect(Object.keys(subject).length).toEqual(apiMethods.length)
       apiMethods.forEach(key => {
@@ -173,6 +173,61 @@ describe('righttp', () => {
         expect(fetch).toHaveBeenCalledTimes(2)
         expect(firstInit.body).toBeUndefined()
         expect(secondInit.body).toBeUndefined()
+      })
+    })
+
+    describe('get', () => {
+      it('should use our preset defaults', async () => {
+        expect.assertions(3)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const subject = await righttp().get('foo')
+
+        expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect(fetch.mock.calls).toMatchSnapshot()
+      })
+
+      it('should preset a URL', async () => {
+        expect.assertions(3)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const subject = await righttp('preset').get('foo')
+        const [firstCall] = fetch.mock.calls
+        const [url] = firstCall
+
+        expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect(url).toBe('preset/foo')
+      })
+
+      it('should set GET as method in init', async () => {
+        expect.assertions(3)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const subject = await righttp('foo', { method: 'POST' }).get('bar')
+        const [firstCall] = fetch.mock.calls
+        const [_, init] = firstCall
+
+        expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect(init.method).toBe('GET')
+      })
+
+      it('should append query params to URL', async () => {
+        expect.assertions(3)
+        fetch.mockResponse(resolveAsResponses.JSON)
+
+        const subject = await righttp().get('foo', {
+          bar: 'baz',
+          qux: 123,
+        })
+        const [firstCall] = fetch.mock.calls
+        const [url] = firstCall
+
+        expect(subject).toEqual(JSON.parse(resolveAsResponses.JSON))
+        expect(fetch).toHaveBeenCalledTimes(1)
+        expect(url).toBe('foo?bar=baz&qux=123')
       })
     })
 
