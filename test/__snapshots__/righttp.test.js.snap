@@ -30,6 +30,21 @@ Array [
 ]
 `;
 
+exports[`righttp righttp patch should use our preset defaults 1`] = `
+Array [
+  Array [
+    "foo",
+    Object {
+      "headers": Object {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      "method": "PATCH",
+    },
+  ],
+]
+`;
+
 exports[`righttp righttp request should call handleResponse with onResponse and response 1`] = `
 Array [
   Array [
