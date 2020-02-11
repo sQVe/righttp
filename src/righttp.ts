@@ -57,6 +57,7 @@ export function righttp(url: string, init: Init, options: Options) {
 
       return request(container)
     },
+
     patch: (url: string, payload: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'PATCH' } })
@@ -64,7 +65,13 @@ export function righttp(url: string, init: Init, options: Options) {
 
       return request(container)
     },
-    // TODO: post.
+    post: (url: string, payload: NotNil) => {
+      const container = loadPayload(
+        presetCombine({ url, init: { method: 'POST' } })
+      )(payload)
+
+      return request(container)
+    },
     preset: presetContainer,
     // TODO: put.
     request: (url: string, init: Init, options: Options) =>
