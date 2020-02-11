@@ -42,10 +42,10 @@ export function righttp(url: string, init: Init, options: Options) {
   const presetCombine = combineContainers(presetContainer)
 
   return {
-    del: (url: string, data?: NotNil) => {
+    del: (url: string, payload?: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'DELETE' } })
-      )(data)
+      )(payload)
 
       return request(container)
     },

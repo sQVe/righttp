@@ -30,7 +30,7 @@ describe('Helpers', () => {
       expect(mockPayloadAs).toHaveReturnedTimes(1)
     })
 
-    it('should return container when data is nil', () => {
+    it('should return container when payload is nil', () => {
       ;[undefined, null].forEach(x =>
         expect(
           loadPayload({

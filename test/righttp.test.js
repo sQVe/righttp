@@ -145,7 +145,7 @@ describe('righttp', () => {
         expect(init.body).toBe('baz')
       })
 
-      it('should not load payload in init when data is nil', async () => {
+      it('should not load payload in init when payload is nil', async () => {
         expect.assertions(7)
         fetch.mockResponse(resolveAsResponses.JSON)
 

@@ -55,19 +55,19 @@ export const handleResponse = (onResponse?: OnResponse) => (res: Response) =>
   onResponse && onResponse(res)
 
 /** preparePayload :: Container -> a -> b */
-export const preparePayload = (container: Container) => (data: NotNil) => {
+export const preparePayload = (container: Container) => (payload: NotNil) => {
   const { payloadAs } = container.options
 
-  return payloadAs && payloadAs(data)
+  return payloadAs && payloadAs(payload)
 }
 
 /** loadPayload :: Container -> a -> Container */
-export const loadPayload = (container: Container) => (data?: NotNil) =>
-  data == null
+export const loadPayload = (container: Container) => (payload?: NotNil) =>
+  payload == null
     ? container
     : {
         ...container,
-        init: { ...container.init, body: preparePayload(container)(data) },
+        init: { ...container.init, body: preparePayload(container)(payload) },
       }
 
 /** resolveResponse :: Response a -> String -> Promise b */
