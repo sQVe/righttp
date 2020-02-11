@@ -60,6 +60,21 @@ Array [
 ]
 `;
 
+exports[`righttp righttp put should use our preset defaults 1`] = `
+Array [
+  Array [
+    "foo",
+    Object {
+      "headers": Object {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      "method": "PUT",
+    },
+  ],
+]
+`;
+
 exports[`righttp righttp request should call handleResponse with onResponse and response 1`] = `
 Array [
   Array [
