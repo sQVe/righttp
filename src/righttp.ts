@@ -8,7 +8,7 @@ import {
 } from './helpers'
 import { defaultContainer } from './constants'
 
-/** request :: Container -> Promise a */
+/** request :: Container -> Promise */
 const request = async (container: Container) => {
   const {
     url,
@@ -28,12 +28,14 @@ const request = async (container: Container) => {
 }
 
 /**
- * righttp :: (String, Init, Options) -> {k: (Container -> Promise a)}
+ * Create a fetch wrapper with easy-to-use request methods.
  *
- * TODO: Write proper JSDocs for `righttp` function and the functions it
- * returns.
+ * @param {string} url - The URL to preset.
+ * @param {object} [init] - The fetch init to preset.
+ * @param {object} [options] - The request options to preset.
+ * @return {object} A righttp object with preset url, init and options.
  */
-export function righttp(url: string, init: Init, options: Options) {
+export function righttp(url: string, init?: Init, options?: Options) {
   const presetContainer = combineContainers(defaultContainer)({
     url,
     init,
@@ -42,6 +44,14 @@ export function righttp(url: string, init: Init, options: Options) {
   const presetCombine = combineContainers(presetContainer)
 
   return {
+    /**
+     * Send a DELETE request.
+     *
+     * @function del
+     * @param {string} url - The URL to request.
+     * @param {*} [payload] - The request payload to attach.
+     * @return {Promise<*>} Promise with request result.
+     */
     del: (url: string, payload?: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'DELETE' } })
@@ -49,6 +59,15 @@ export function righttp(url: string, init: Init, options: Options) {
 
       return request(container)
     },
+
+    /**
+     * Send a GET request.
+     *
+     * @function get
+     * @param {string} url - The URL to request.
+     * @param {object} [queryParams] - The query parameters to append to the URL.
+     * @return {Promise<*>} Promise with request result.
+     */
     get: (url: string, queryParams?: QueryParams) => {
       const container = presetCombine({
         url: queryParams == null ? url : url + '?' + createQuery(queryParams),
@@ -57,6 +76,15 @@ export function righttp(url: string, init: Init, options: Options) {
 
       return request(container)
     },
+
+    /**
+     * Send a PATCH request.
+     *
+     * @function patch
+     * @param {string} url - The URL to request.
+     * @param {*} payload - The request payload to attach.
+     * @return {Promise<*>} Promise with request result.
+     */
     patch: (url: string, payload: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'PATCH' } })
@@ -64,6 +92,15 @@ export function righttp(url: string, init: Init, options: Options) {
 
       return request(container)
     },
+
+    /**
+     * Send a POST request.
+     *
+     * @function patch
+     * @param {string} url - The URL to request.
+     * @param {*} payload - The request payload to attach.
+     * @return {Promise<*>} Promise with request result.
+     */
     post: (url: string, payload: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'POST' } })
@@ -71,7 +108,22 @@ export function righttp(url: string, init: Init, options: Options) {
 
       return request(container)
     },
+
+    /**
+     * The container which holds all preset url, init and option settings.
+     *
+     * @constant
+     */
     preset: presetContainer,
+
+    /**
+     * Send a PUT request.
+     *
+     * @function patch
+     * @param {string} url - The URL to request.
+     * @param {*} payload - The request payload to attach.
+     * @return {Promise<*>} Promise with request result.
+     */
     put: (url: string, payload: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'PUT' } })
@@ -79,7 +131,17 @@ export function righttp(url: string, init: Init, options: Options) {
 
       return request(container)
     },
-    request: (url: string, init: Init, options: Options) =>
+
+    /**
+     * Send a request.
+     *
+     * @function request
+     * @param {string} url - The URL to request.
+     * @param {object} [init] - The fetch init.
+     * @param {object} [options] - The request options.
+     * @return {Promise<*>} Promise with request result.
+     */
+    request: (url: string, init?: Init, options?: Options) =>
       request(presetCombine({ url, init, options })),
   }
 }
