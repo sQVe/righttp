@@ -15,7 +15,7 @@ describe('Helpers', () => {
   afterEach(jest.clearAllMocks)
 
   describe('loadPayload', () => {
-    const mockPayloadAs = jest.fn(x => x)
+    const mockPayloadAs = jest.fn((x) => x)
 
     it('should arm init with a payload', () => {
       const subject = loadPayload({
@@ -31,7 +31,7 @@ describe('Helpers', () => {
     })
 
     it('should return container when payload is nil', () => {
-      ;[undefined, null].forEach(x =>
+      ;[undefined, null].forEach((x) =>
         expect(
           loadPayload({
             init: {
@@ -111,7 +111,7 @@ describe('Helpers', () => {
     })
 
     it('should return empty query', () => {
-      falsyValues.forEach(x => {
+      falsyValues.forEach((x) => {
         const query = createQuery(x)
 
         expect(query).toBe('')
@@ -157,7 +157,7 @@ describe('Helpers', () => {
 
   describe('preparePayload', () => {
     const container = {
-      options: { payloadAs: payload => 'foo' + payload },
+      options: { payloadAs: (payload) => 'foo' + payload },
     }
 
     it('should return a prepared payload', () => {

@@ -28,21 +28,21 @@ export type Init = RequestInit & {
     | 'PATCH'
     | 'POST'
     | 'PUT'
-    | 'TRACE',
+    | 'TRACE';
 }
 
 export type Options = {
-  payloadAs?: PayloadAs,
-  resolveAs?: ResolveAs,
-  onResponse?: OnResponse,
+  payloadAs?: PayloadAs;
+  resolveAs?: ResolveAs;
+  onResponse?: OnResponse;
 }
 
 export type Container = {
-  init: Init,
-  options: Options,
-  url: string,
+  init: Init;
+  options: Options;
+  url: string;
 }
 
 export type QueryParams = {
-  [key: string]: number | boolean | string,
+  [key: string]: number | boolean | string;
 }

@@ -13,8 +13,8 @@ describe('Utility', () => {
 
     it('should return false for non strings', () => {
       valuesWithDifferentTypes
-        .filter(x => typeof x !== 'string')
-        .forEach(x => expect(isNonEmptyString(x)).toBe(false))
+        .filter((x) => typeof x !== 'string')
+        .forEach((x) => expect(isNonEmptyString(x)).toBe(false))
     })
   })
 })

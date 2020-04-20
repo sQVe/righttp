@@ -8,23 +8,23 @@ jest.mock('../src/helpers', () => {
 
   return {
     ...helpers,
-    combineContainers: jest.fn(a =>
-      mockLastCombineContainerUnary.mockImplementation(b =>
+    combineContainers: jest.fn((a) =>
+      mockLastCombineContainerUnary.mockImplementation((b) =>
         helpers.combineContainers(a)(b)
       )
     ),
-    handleResponse: jest.fn(a =>
-      mockLastHandleResponseUnary.mockImplementation(b =>
+    handleResponse: jest.fn((a) =>
+      mockLastHandleResponseUnary.mockImplementation((b) =>
         helpers.handleResponse(a)(b)
       )
     ),
-    loadPayload: jest.fn(a =>
-      mockLastLoadPayloadUnary.mockImplementation(b =>
+    loadPayload: jest.fn((a) =>
+      mockLastLoadPayloadUnary.mockImplementation((b) =>
         helpers.loadPayload(a)(b)
       )
     ),
-    resolveResponse: jest.fn(res =>
-      mockLastResolveResponseUnary.mockImplementation(resolveAs =>
+    resolveResponse: jest.fn((res) =>
+      mockLastResolveResponseUnary.mockImplementation((resolveAs) =>
         helpers.resolveResponse(
           resolveAs === 'FormData'
             ? // Mock formData method due to lack of support in node-fetch.
@@ -76,7 +76,7 @@ describe('righttp', () => {
       ]
 
       expect(Object.keys(subject).length).toEqual(apiMethods.length)
-      apiMethods.forEach(key => {
+      apiMethods.forEach((key) => {
         expect(subject[key]).toBeDefined()
       })
     })
@@ -139,7 +139,7 @@ describe('righttp', () => {
         expect.assertions(5)
         fetch.mockResponse(resolveAsResponses.JSON)
 
-        const subject = await righttp('foo', {}, { payloadAs: x => x }).del(
+        const subject = await righttp('foo', {}, { payloadAs: (x) => x }).del(
           'bar',
           'baz'
         )
@@ -160,12 +160,12 @@ describe('righttp', () => {
         const firstSubject = await righttp(
           'foo',
           {},
-          { payloadAs: x => x }
+          { payloadAs: (x) => x }
         ).del('bar')
         const secondSubject = await righttp(
           'foo',
           {},
-          { payloadAs: x => x }
+          { payloadAs: (x) => x }
         ).del('bar', null)
         const [firstCall, secondCall] = fetch.mock.calls
         const [_, firstInit] = firstCall
@@ -281,7 +281,7 @@ describe('righttp', () => {
         expect.assertions(5)
         fetch.mockResponse(resolveAsResponses.JSON)
 
-        const subject = await righttp('foo', {}, { payloadAs: x => x }).patch(
+        const subject = await righttp('foo', {}, { payloadAs: (x) => x }).patch(
           'bar',
           'baz'
         )
@@ -338,7 +338,7 @@ describe('righttp', () => {
         expect.assertions(5)
         fetch.mockResponse(resolveAsResponses.JSON)
 
-        const subject = await righttp('foo', {}, { payloadAs: x => x }).post(
+        const subject = await righttp('foo', {}, { payloadAs: (x) => x }).post(
           'bar',
           'baz'
         )
@@ -395,7 +395,7 @@ describe('righttp', () => {
         expect.assertions(5)
         fetch.mockResponse(resolveAsResponses.JSON)
 
-        const subject = await righttp('foo', {}, { payloadAs: x => x }).put(
+        const subject = await righttp('foo', {}, { payloadAs: (x) => x }).put(
           'bar',
           'baz'
         )
