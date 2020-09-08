@@ -12,5 +12,5 @@ after_success:
   - npm run test:coverage:upload
 deploy:
   provider: script
-  cleanup: true
+  skip_cleanup: true
   script: npx semantic-release --no-install
