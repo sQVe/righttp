@@ -35,11 +35,15 @@ const request = async (container: Container) => {
  * @param {object} [options] - The request options to preset.
  * @return {object} A righttp object with preset url, init and options.
  */
-export function righttp(url: string, init?: Init, options?: Options) {
+export function righttp(
+  baseUrl: string,
+  baseInit?: Init,
+  baseOptions?: Options
+) {
   const presetContainer = combineContainers(defaultContainer)({
-    url,
-    init,
-    options,
+    url: baseUrl,
+    init: baseInit,
+    options: baseOptions,
   })
   const presetCombine = combineContainers(presetContainer)
 

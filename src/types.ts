@@ -1,4 +1,10 @@
-export type NotNil = bigint | boolean | number | object | string | symbol
+export type NotNil =
+  | Record<string, unknown>
+  | bigint
+  | boolean
+  | number
+  | string
+  | symbol
 
 export type OnResponse = ((res: Response) => void) | null
 export type PayloadAs = ((payload: NotNil) => BodyInit) | null
@@ -28,21 +34,21 @@ export type Init = RequestInit & {
     | 'PATCH'
     | 'POST'
     | 'PUT'
-    | 'TRACE';
+    | 'TRACE'
 }
 
 export type Options = {
-  payloadAs?: PayloadAs;
-  resolveAs?: ResolveAs;
-  onResponse?: OnResponse;
+  payloadAs?: PayloadAs
+  resolveAs?: ResolveAs
+  onResponse?: OnResponse
 }
 
 export type Container = {
-  init: Init;
-  options: Options;
-  url: string;
+  init: Init
+  options: Options
+  url: string
 }
 
 export type QueryParams = {
-  [key: string]: number | boolean | string;
+  [key: string]: number | boolean | string
 }

@@ -522,7 +522,9 @@ describe('righttp', () => {
         expect.assertions(4)
         fetch.mockResponse(resolveAsResponses.JSON)
 
-        const onResponse = () => {}
+        const onResponse = () => {
+          // Noop.
+        }
         const subject = await righttp().request('foo', undefined, {
           onResponse,
         })

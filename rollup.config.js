@@ -8,7 +8,7 @@ import pkg from './package.json'
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx']
 const bundleTarget = process.env.BUILD_BUNDLE
-const dependencies = [
+const externalDependencies = [
   'core-js',
   ...Object.keys(pkg.dependencies || {}),
   ...Object.keys(pkg.peerDependencies || {}),
@@ -41,7 +41,7 @@ const external = (dependencies) => (id) =>
     .some(Boolean)
 
 const bundle = presetBundleDefaults({
-  external: external(dependencies),
+  external: external(externalDependencies),
   input: 'src/index.ts',
   output: { exports: 'named', indent: false },
   plugins: [nodeResolve({ extensions }), commonjs(), json()],
