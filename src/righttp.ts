@@ -24,7 +24,7 @@ const request = async (container: Container) => {
   handleResponse(onResponse)(res)
 
   if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`)
-  return resolveResponse(res)(resolveAs)
+  return await resolveResponse(res)(resolveAs)
 }
 
 /**
@@ -56,12 +56,12 @@ export function righttp(
      * @param {*} [payload] - The request payload to attach.
      * @return {Promise<*>} Promise with request result.
      */
-    del: (url: string, payload?: NotNil) => {
+    del: async (url: string, payload?: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'DELETE' } })
       )(payload)
 
-      return request(container)
+      return await request(container)
     },
 
     /**
@@ -72,13 +72,13 @@ export function righttp(
      * @param {object} [queryParams] - The query parameters to append to the URL.
      * @return {Promise<*>} Promise with request result.
      */
-    get: (url: string, queryParams?: QueryParams) => {
+    get: async (url: string, queryParams?: QueryParams) => {
       const container = presetCombine({
         url: queryParams == null ? url : url + '?' + createQuery(queryParams),
         init: { method: 'GET' },
       })
 
-      return request(container)
+      return await request(container)
     },
 
     /**
@@ -89,12 +89,12 @@ export function righttp(
      * @param {*} payload - The request payload to attach.
      * @return {Promise<*>} Promise with request result.
      */
-    patch: (url: string, payload: NotNil) => {
+    patch: async (url: string, payload: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'PATCH' } })
       )(payload)
 
-      return request(container)
+      return await request(container)
     },
 
     /**
@@ -105,12 +105,12 @@ export function righttp(
      * @param {*} payload - The request payload to attach.
      * @return {Promise<*>} Promise with request result.
      */
-    post: (url: string, payload: NotNil) => {
+    post: async (url: string, payload: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'POST' } })
       )(payload)
 
-      return request(container)
+      return await request(container)
     },
 
     /**
@@ -128,12 +128,12 @@ export function righttp(
      * @param {*} payload - The request payload to attach.
      * @return {Promise<*>} Promise with request result.
      */
-    put: (url: string, payload: NotNil) => {
+    put: async (url: string, payload: NotNil) => {
       const container = loadPayload(
         presetCombine({ url, init: { method: 'PUT' } })
       )(payload)
 
-      return request(container)
+      return await request(container)
     },
 
     /**
@@ -145,7 +145,7 @@ export function righttp(
      * @param {object} [options] - The request options.
      * @return {Promise<*>} Promise with request result.
      */
-    request: (url: string, init?: Init, options?: Options) =>
-      request(presetCombine({ url, init, options })),
+    request: async (url: string, init?: Init, options?: Options) =>
+      await request(presetCombine({ url, init, options })),
   }
 }

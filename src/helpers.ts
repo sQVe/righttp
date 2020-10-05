@@ -9,12 +9,12 @@ import {
 import { isNonEmptyString } from './utility'
 
 /** combineUrls :: [String] -> String */
-export const combineUrls = (urls: (string | undefined)[]) => {
+export const combineUrls = (urls: Array<string | undefined>) => {
   const addTrailingSlash = (x: string) => (x.endsWith('/') ? x : `${x}/`)
   const removeLeadingSlash = (x: string) =>
     x.startsWith('/') ? x.substring(1) : x
 
-  const validUrls = (urls || []).filter(isNonEmptyString)
+  const validUrls = (urls ?? []).filter(isNonEmptyString)
 
   if (validUrls.length === 0) return ''
   if (validUrls.length === 1) return validUrls[0]
@@ -26,11 +26,11 @@ export const combineUrls = (urls: (string | undefined)[]) => {
 
 /** createQuery :: {k: v} -> String */
 export const createQuery = (params: QueryParams) => {
-  const arr = Object.entries(params || {}).map(([k, v]) =>
+  const arr = Object.entries(params ?? {}).map(([k, v]) =>
     [k, encodeURIComponent(v)].join('=')
   )
 
-  return arr.length ? arr.join('&') : ''
+  return arr.length > 0 ? arr.join('&') : ''
 }
 
 /** getResolveAsMethodName :: String -> String */
@@ -47,18 +47,18 @@ export const getResolveAsMethodName = (resolveAs?: ResolveAs) => {
   if (resolveAs == null) return methodNameLookup.response
 
   const caseSafeResolveAs = resolveAs.toLowerCase()
-  return methodNameLookup[caseSafeResolveAs] || resolveAs
+  return methodNameLookup[caseSafeResolveAs] ?? resolveAs
 }
 
 /** handleResponse :: Response r => (r a -> void) -> r a -> void */
 export const handleResponse = (onResponse?: OnResponse) => (res: Response) =>
-  onResponse && onResponse(res)
+  onResponse?.(res)
 
 /** preparePayload :: Container -> a -> b */
 export const preparePayload = (container: Container) => (payload: NotNil) => {
   const { payloadAs } = container.options
 
-  return payloadAs && payloadAs(payload)
+  return payloadAs?.(payload)
 }
 
 /** loadPayload :: Container -> a -> Container */
@@ -81,10 +81,10 @@ export const resolveResponse = (res: Response) => async (
     const text = await res.clone().text()
 
     if (text.length === 0) return undefined // eslint-disable-line fp/no-nil
-    return res.json()
+    return await res.json()
   }
 
-  return res[resolveAsMethodName]()
+  return await res[resolveAsMethodName]()
 }
 
 /** combineContainers :: Container -> Container -> Container */
@@ -92,6 +92,6 @@ export const combineContainers = (a: Partial<Container>) => (
   b: Partial<Container>
 ): Container => ({
   url: combineUrls([a.url, b.url]),
-  init: { ...(a.init || {}), ...(b.init || {}) },
-  options: { ...(a.options || {}), ...(b.options || {}) },
+  init: { ...(a.init ?? {}), ...(b.init ?? {}) },
+  options: { ...(a.options ?? {}), ...(b.options ?? {}) },
 })
