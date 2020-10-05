@@ -9,12 +9,12 @@ import {
 import { isNonEmptyString } from './utility'
 
 /** combineUrls :: [String] -> String */
-export const combineUrls = (urls: Array<string | undefined> = []) => {
+export const combineUrls = (urls: Array<string | undefined>) => {
   const addTrailingSlash = (x: string) => (x.endsWith('/') ? x : `${x}/`)
   const removeLeadingSlash = (x: string) =>
     x.startsWith('/') ? x.substring(1) : x
 
-  const validUrls = urls.filter(isNonEmptyString)
+  const validUrls = (urls ?? []).filter(isNonEmptyString)
 
   if (validUrls.length === 0) return ''
   if (validUrls.length === 1) return validUrls[0]
@@ -25,8 +25,8 @@ export const combineUrls = (urls: Array<string | undefined> = []) => {
 }
 
 /** createQuery :: {k: v} -> String */
-export const createQuery = (params: QueryParams = {}) => {
-  const arr = Object.entries(params).map(([k, v]) =>
+export const createQuery = (params: QueryParams) => {
+  const arr = Object.entries(params ?? {}).map(([k, v]) =>
     [k, encodeURIComponent(v)].join('=')
   )
 

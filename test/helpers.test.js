@@ -149,9 +149,9 @@ describe('Helpers', () => {
       expect(mockOnResponse).toHaveBeenCalledWith(payload)
     })
 
-    it('should return onResponse when onResponse is nil', () => {
+    it('should return undefined when onResponse is nil', () => {
       expect(handleResponse(undefined)(payload)).toBeUndefined()
-      expect(handleResponse(null)(payload)).toBeNull()
+      expect(handleResponse(null)(payload)).toBeUndefined()
     })
   })
 
@@ -164,9 +164,11 @@ describe('Helpers', () => {
       expect(preparePayload(container)('bar')).toBe('foobar')
     })
 
-    it('should return payloadAs when payloadAs option is nil', () => {
+    it('should return undefined when payloadAs option is nil', () => {
       expect(preparePayload({ options: {} })('foo')).toBeUndefined()
-      expect(preparePayload({ options: { payloadAs: null } })('foo')).toBeNull()
+      expect(
+        preparePayload({ options: { payloadAs: null } })('foo')
+      ).toBeUndefined()
     })
   })
 
