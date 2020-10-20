@@ -51,23 +51,17 @@ const bundle = presetBundleDefaults({
 const bundles = [
   bundle({
     output: { format: 'cjs', file: `lib/${pkg.name}.js` },
-    plugins: [babel({ extensions, runtimeHelpers: true })],
+    plugins: [babel({ extensions })],
     type: 'cjs',
   }),
   bundle({
-    external: () => false,
     output: { format: 'cjs', file: `lib/${pkg.name}.min.js` },
-    plugins: [babel({ extensions, runtimeHelpers: true }), terser()],
+    plugins: [babel({ extensions }), terser()],
     type: 'cjs',
   }),
   bundle({
-    output: { format: 'es', file: `es/${pkg.name}.js` },
-    plugins: [babel({ extensions, runtimeHelpers: true })],
-    type: 'es',
-  }),
-  bundle({
-    output: { format: 'es', file: `es/${pkg.name}.mjs` },
-    plugins: [babel({ extensions, runtimeHelpers: true })],
+    output: { format: 'es', file: `lib/${pkg.name}.es.js` },
+    plugins: [babel({ extensions })],
     type: 'es',
   }),
 ]

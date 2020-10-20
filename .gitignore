@@ -28,7 +28,6 @@ package.lock
 # Build generated.
 build/
 coverage/
-es/
 lib/
 types/
 
