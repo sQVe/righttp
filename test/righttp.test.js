@@ -321,7 +321,7 @@ describe('righttp', () => {
         expect(url).toBe('preset/foo')
       })
 
-      it('should set PATCH as method in init', async () => {
+      it('should set POST as method in init', async () => {
         expect.assertions(3)
         fetch.mockResponse(resolveAsResponses.JSON)
 
@@ -378,7 +378,7 @@ describe('righttp', () => {
         expect(url).toBe('preset/foo')
       })
 
-      it('should set PATCH as method in init', async () => {
+      it('should set PUT as method in init', async () => {
         expect.assertions(3)
         fetch.mockResponse(resolveAsResponses.JSON)
 
