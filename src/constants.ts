@@ -1,6 +1,6 @@
-import { Container } from './types'
+import { IContainer } from './types'
 
-export const defaultContainer: Container = {
+export const defaultContainer: IContainer = {
   url: '',
   init: {
     headers: {

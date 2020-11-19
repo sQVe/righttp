@@ -1,10 +1,10 @@
 import {
-  Container,
-  NotNil,
-  OnResponse,
-  QueryParams,
-  ResolveAs,
-  ResolveMethod,
+  IContainer,
+  IQueryParams,
+  TNotNil,
+  TOnResponse,
+  TResolveAs,
+  TResolveMethod,
 } from './types'
 import { isNonEmptyString } from './utility'
 
@@ -25,7 +25,7 @@ export const combineUrls = (urls: Array<string | undefined>) => {
 }
 
 /** createQuery :: {k: v} -> String */
-export const createQuery = (params: QueryParams) => {
+export const createQuery = (params: IQueryParams) => {
   const arr = Object.entries(params ?? {}).map(([k, v]) =>
     [k, encodeURIComponent(v)].join('=')
   )
@@ -34,8 +34,8 @@ export const createQuery = (params: QueryParams) => {
 }
 
 /** getResolveAsMethodName :: String -> String */
-export const getResolveAsMethodName = (resolveAs?: ResolveAs) => {
-  const methodNameLookup: { [index: string]: ResolveMethod } = {
+export const getResolveAsMethodName = (resolveAs?: TResolveAs) => {
+  const methodNameLookup: { [index: string]: TResolveMethod } = {
     arraybuffer: 'arrayBuffer',
     blob: 'blob',
     formdata: 'formData',
@@ -51,18 +51,18 @@ export const getResolveAsMethodName = (resolveAs?: ResolveAs) => {
 }
 
 /** handleResponse :: Response r => (r a -> void) -> r a -> void */
-export const handleResponse = (onResponse?: OnResponse) => (res: Response) =>
+export const handleResponse = (onResponse?: TOnResponse) => (res: Response) =>
   onResponse?.(res)
 
 /** preparePayload :: Container -> a -> b */
-export const preparePayload = (container: Container) => (payload: NotNil) => {
+export const preparePayload = (container: IContainer) => (payload: TNotNil) => {
   const { payloadAs } = container.options
 
   return payloadAs?.(payload)
 }
 
 /** loadPayload :: Container -> a -> Container */
-export const loadPayload = (container: Container) => (payload?: NotNil) =>
+export const loadPayload = (container: IContainer) => (payload?: TNotNil) =>
   payload == null
     ? container
     : {
@@ -72,7 +72,7 @@ export const loadPayload = (container: Container) => (payload?: NotNil) =>
 
 /** resolveResponse :: Response a -> String -> Promise b */
 export const resolveResponse = (res: Response) => async (
-  resolveAs?: ResolveAs
+  resolveAs?: TResolveAs
 ) => {
   const resolveAsMethodName = getResolveAsMethodName(resolveAs)
 
@@ -88,9 +88,9 @@ export const resolveResponse = (res: Response) => async (
 }
 
 /** combineContainers :: Container -> Container -> Container */
-export const combineContainers = (a: Partial<Container>) => (
-  b: Partial<Container>
-): Container => ({
+export const combineContainers = (a: Partial<IContainer>) => (
+  b: Partial<IContainer>
+): IContainer => ({
   url: combineUrls([a.url, b.url]),
   init: { ...(a.init ?? {}), ...(b.init ?? {}) },
   options: { ...(a.options ?? {}), ...(b.options ?? {}) },

@@ -1,4 +1,4 @@
-export type NotNil =
+export type TNotNil =
   | Record<string, unknown>
   | bigint
   | boolean
@@ -6,9 +6,9 @@ export type NotNil =
   | string
   | symbol
 
-export type OnResponse = ((res: Response) => void) | null
-export type PayloadAs = ((payload: NotNil) => BodyInit) | null
-export type ResolveAs =
+export type TOnResponse = ((res: Response) => void) | null
+export type TPayloadAs = ((payload: TNotNil) => BodyInit) | null
+export type TResolveAs =
   | 'ArrayBuffer'
   | 'Blob'
   | 'FormData'
@@ -16,7 +16,7 @@ export type ResolveAs =
   | 'Response'
   | 'Text'
 
-export type ResolveMethod =
+export type TResolveMethod =
   | 'arrayBuffer'
   | 'blob'
   | 'formData'
@@ -24,7 +24,7 @@ export type ResolveMethod =
   | 'response'
   | 'text'
 
-export type Init = RequestInit & {
+export type TInit = RequestInit & {
   method?:
     | 'CONNECT'
     | 'DELETE'
@@ -37,18 +37,18 @@ export type Init = RequestInit & {
     | 'TRACE'
 }
 
-export type Options = {
-  payloadAs?: PayloadAs
-  resolveAs?: ResolveAs
-  onResponse?: OnResponse
+export interface IOptions {
+  payloadAs?: TPayloadAs
+  resolveAs?: TResolveAs
+  onResponse?: TOnResponse
 }
 
-export type Container = {
-  init: Init
-  options: Options
+export interface IContainer {
+  init: TInit
+  options: IOptions
   url: string
 }
 
-export type QueryParams = {
+export interface IQueryParams {
   [key: string]: number | boolean | string
 }

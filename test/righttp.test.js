@@ -36,19 +36,19 @@ jest.mock('../src/helpers', () => {
   }
 })
 
-import mockJest from 'jest-fetch-mock'
 import { Response } from 'cross-fetch'
+import mockJest from 'jest-fetch-mock'
 
+import { defaultContainer } from '../src/constants'
 import {
   combineContainers,
   handleResponse,
   loadPayload,
   resolveResponse,
 } from '../src/helpers'
-import { commonHttpStatuses, resolveAsMethodNameMap } from './setup/constants'
-import { defaultContainer } from '../src/constants'
-import { resolveAsResponses } from './setup/mocks'
 import { righttp } from '../src/righttp'
+import { commonHttpStatuses, resolveAsMethodNameMap } from './setup/constants'
+import { resolveAsResponses } from './setup/mocks'
 
 mockJest.enableMocks()
 
